@@ -145,7 +145,32 @@ local platformOffsets = {
 	Win32 = {
 		image = platformIcons.pcAndMobile,
 		offset = vec2(0,512),
-		hover = "Windows (Binary)"
+		hover = "Windows (32Bit Binary)"
+	},
+	Win64 = {
+		image = platformIcons.pcAndMobile,
+		offset = vec2(0,512),
+		hover = "Windows (64Bit Binary)"
+	},
+	Linux32 = {
+		image = platformIcons.moreIcons,
+		offset = vec2(512,0),
+		hover = "Linux (32Bit Binary)"
+	},
+	Linux64 = {
+		image = platformIcons.moreIcons,
+		offset = vec2(512,0),
+		hover = "Linux (64Bit Binary)"
+	},
+	PS4 = {
+		image = platformIcons.moreIcons,
+		offset = vec2(512,0),
+		hover = "PS4"
+	},
+	Switch = {
+		image = platformIcons.console,
+		offset = vec2(0,512),
+		hover = "Nintendo Switch"
 	},
 	Windows_Universal = {
 		image = platformIcons.moreIcons,
