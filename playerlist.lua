@@ -163,7 +163,7 @@ local platformOffsets = {
 		hover = "Linux (64Bit Binary)"
 	},
 	PS4 = {
-		image = platformIcons.moreIcons,
+		image = platformIcons.console,
 		offset = vec2(512,0),
 		hover = "PS4"
 	},
