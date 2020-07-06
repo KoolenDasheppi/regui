@@ -31,6 +31,8 @@ else
 		end
 		downloadscripts()
 		writefile("regui/version.txt",lat_version)
+	else
+		print("running the latest version")
 	end
 end
 print("retrieving files located in regui\\scripts")
