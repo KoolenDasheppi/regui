@@ -1,7 +1,7 @@
 local http = game:GetService("HttpService")
 local url = "https://raw.githubusercontent.com/HexaRG/regui/master/"
 function download(file)
-	return game:HttpGet(url .. file)
+	return game:HttpGet(url .. file, true)
 end
 function downloadscripts()
 	print("downloading regui scrips from github")
@@ -45,3 +45,5 @@ for i,path in  pairs(scripts) do
 	loadstring(script)()
 	print("executed " .. path)
 end
+--local playerlist = readfile("regui/playerlist.lua")
+--local playerlist = readfile("regui/playerlist.lua")
