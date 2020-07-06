@@ -45,7 +45,7 @@ pad.BackgroundColor = BrickColor.new("Institutional white")
 pad.BackgroundColor3 = Color3.new(1, 1, 1)
 pad.BackgroundTransparency = 1
 plat.Name = "platform"
-plat.Parent = pad 
+plat.Parent = pad
 plat.Size = UDim2.new(0, 20, 0, 20)
 plat.BackgroundColor = BrickColor.new("Institutional white")
 plat.BackgroundColor3 = Color3.new(1, 1, 1)
@@ -97,7 +97,8 @@ ui.list_frm.layout.player_item.pad.playername.TextStrokeColor3 = Color3.new(1,1,
 
 local platformIcons = {
 	pcAndMobile = "rbxassetid://5273747925",
-	console = "rbxassetid://5274004481"
+	console = "rbxassetid://5274004481",
+	moreIcons = "rbxassetid://5295964612"
 }
 local vec2 = Vector2.new
 local vec3 = Vector3.new
@@ -147,8 +148,8 @@ local platformOffsets = {
 		hover = "Windows (Binary)"
 	},
 	Windows_Universal = {
-		image = platformIcons.pcAndMobile,
-		offset = vec2(0,512),
+		image = platformIcons.moreIcons,
+		offset = vec2(0,0),
 		hover = "Windows (UWP)"
 	},
 	Android = {
