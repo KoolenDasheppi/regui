@@ -92,6 +92,7 @@ while true do
 		wait(.5)
 	else
 		if started then
+			SpinnerRS:Disconnect()
 			break
 		else
 			wait()
