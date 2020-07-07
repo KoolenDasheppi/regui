@@ -79,6 +79,7 @@ function OnRender()
 		didVibe.ImageTransparency = didVibe.Parent.BackgroundTransparency
 		curSpin.ImageTransparency = didVibe.Parent.BackgroundTransparency
 		curSpin.Parent.oldSpinnerText.TextTransparency = didVibe.Parent.BackgroundTransparency
+		didVibe.Parent.PlaceIcon.ImageTransparency = didVibe.Parent.BackgroundTransparency
 	end
 	vibeCheckAll()
 end
