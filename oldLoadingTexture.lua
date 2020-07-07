@@ -4,6 +4,7 @@ local didVibe = nil
 function createOldTexture()
 	local oldTexture = Instance.new("ImageLabel")
 	oldTexture.Image = "rbxasset://textures/loading/darkLoadingTexture.png"
+	oldTexture.ScaleType = Enum.ScaleType.Tile
 	oldTexture.TileSize = UDim2.new(
 		0,512,
 		0,512
@@ -38,4 +39,4 @@ function OnRender()
 	end
 	vibeCheckAll()
 end
-game:GetService("RunService").RenderStepped:Connect(OnRender)
+game:GetService("RunService").RenderStepped:Connect(vibeCheckAll)
