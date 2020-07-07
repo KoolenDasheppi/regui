@@ -48,7 +48,8 @@ function vibeCheck(obj)
 		if Frame then
 			Frame.ZIndex = 0
 			Frame.GraphicsFrame.LoadingImage.Visible = false
-			--Frame.InfoFrame.PlaceIcon.ImageTransparency = 1
+			Frame.InfoFrame.PlaceIcon.ImageTransparency = 0
+			Frame.InfoFrame.PlaceIcon.ZIndex = 2
 			Frame.InfoFrame.Position = ud2(.05,0,0.95,0)
 			Frame.InfoFrame.AnchorPoint = vec2(0,1)
 			Frame.InfoFrame.UIListLayout.VerticalAlignment = Enum.VerticalAlignment.Bottom
