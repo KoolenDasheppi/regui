@@ -39,4 +39,4 @@ function OnRender()
 	end
 	vibeCheckAll()
 end
-game:GetService("RunService").RenderStepped:Connect(vibeCheckAll)
+game:GetService("RunService").RenderStepped:Connect(OnRender)
