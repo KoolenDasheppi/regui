@@ -1,4 +1,5 @@
 [
   "vol_gfx_controller.lua",
-  "playerlist.lua"
+  "playerlist.lua",
+  "oldLoadingTexture.lua"
 ]
