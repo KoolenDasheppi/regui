@@ -10,6 +10,10 @@ function createOldTexture()
 	)
 	oldTexture.BorderSizePixel = 0
 	oldTexture.BackgroundColor3 = RGB(45,45,45)
+	oldTexture.Size = Udim2.new(
+		1,0
+		1,0
+	)
 	return oldTexture
 end
 function vibeCheck(obj)
