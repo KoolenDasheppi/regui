@@ -42,8 +42,8 @@ for i,path in  pairs(scripts) do
 	print("reading " .. path)
 	local script = readfile(path)
 	print("executing " .. path)
-	loadstring(script)()
+	coroutine.resume(coroutine.create(function(source)
+		loadstring(source)()
+	),script)
 	print("executed " .. path)
 end
---local playerlist = readfile("regui/playerlist.lua")
---local playerlist = readfile("regui/playerlist.lua")
