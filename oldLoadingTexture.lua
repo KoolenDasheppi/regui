@@ -1,5 +1,6 @@
 local RGB = Color3.fromRGB
-local CoreGui = game:WaitForChild("CoreGui")
+local coreGui = game:WaitForChild("CoreGui")
+local didVibe = false
 function createOldTexture()
 	local oldTexture = Instance.new("ImageLabel")
 	oldTexture.Image = "rbxasset://textures/loading/darkLoadingTexture.png"
@@ -12,12 +13,19 @@ function createOldTexture()
 	return oldTexture
 end
 function vibeCheck(obj)
+	if didVibe then
+		return
+	end
 	if obj.Name == "RobloxLoadingGui" then
 		local oldTexture = createOldTexture()
 		oldTexture.Parent = obj:FindFirstChildOfClass("Frame")
+		didVibe = true
 	end
 end
-for i,dec in pairs(CoreGui:GetChildren()) do
-	vibeCheck(dec)
+function vibeCheckAll()
+	for i,dec in pairs(coreGui:GetChildren()) do
+		vibeCheck(dec)
+	end
 end
-CoreGui.ChildAdded:Connect(vibeCheck)
+vibeCheckAll()
+game:GetService("RunService").RenderStepped:Connect(vibeCheckAll)
