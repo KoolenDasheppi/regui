@@ -1,8 +1,16 @@
 ScreenGui0=Instance.new("ScreenGui");ImageButton1=Instance.new("ImageButton")Frame2=Instance.new("Frame")Frame3=Instance.new("Frame")UIListLayout4=Instance.new("UIListLayout")ImageButton5=Instance.new("ImageButton")ImageButton6=Instance.new("ImageButton")ImageButton7=Instance.new("ImageButton")ImageButton8=Instance.new("ImageButton")ImageButton9=Instance.new("ImageButton")ImageButton10=Instance.new("ImageButton")ImageButton11=Instance.new("ImageButton")ImageButton12=Instance.new("ImageButton")ImageButton13=Instance.new("ImageButton")ImageButton14=Instance.new("ImageButton")ImageLabel15=Instance.new("ImageLabel")Sound16=Instance.new("Sound")ScreenGui0.Name="sgui"ScreenGui0.ZIndexBehavior=Enum.ZIndexBehavior.Sibling;ImageButton1.Name="mframe"ImageButton1.Parent=ScreenGui0;ImageButton1.Position=UDim2.new(0.5,0,1,-100)ImageButton1.Size=UDim2.new(0,256,0,281)ImageButton1.AnchorPoint=Vector2.new(0.5,1)ImageButton1.BackgroundColor3=Color3.new(0.180392,0.180392,0.180392)ImageButton1.BackgroundTransparency=1;ImageButton1.Image="rbxassetid://2790390993"ImageButton1.ImageColor3=Color3.new(0.180392,0.180392,0.180392)ImageButton1.ScaleType=Enum.ScaleType.Slice;ImageButton1.SliceCenter=Rect.new(Vector2.new(16,16),Vector2.new(240,240))Frame2.Name="con"Frame2.Parent=ImageButton1;Frame2.Position=UDim2.new(0.5,0,0.5,0)Frame2.Size=UDim2.new(1,-15,1,-15)Frame2.AnchorPoint=Vector2.new(0.5,0.5)Frame2.BackgroundColor3=Color3.new(1,1,1)Frame2.BackgroundTransparency=1;Frame3.Name="bars"Frame3.Parent=Frame2;Frame3.Position=UDim2.new(0,0,1,0)Frame3.Size=UDim2.new(1,0,0,25)Frame3.AnchorPoint=Vector2.new(0,1)Frame3.BackgroundColor3=Color3.new(1,1,1)Frame3.BackgroundTransparency=1;UIListLayout4.Parent=Frame3;UIListLayout4.FillDirection=Enum.FillDirection.Horizontal;UIListLayout4.HorizontalAlignment=Enum.HorizontalAlignment.Right;UIListLayout4.SortOrder=Enum.SortOrder.LayoutOrder;UIListLayout4.VerticalAlignment=Enum.VerticalAlignment.Center;UIListLayout4.Padding=UDim.new(0.00200000009,4)ImageButton5.Name="v1"ImageButton5.Parent=Frame3;ImageButton5.Size=UDim2.new(0,20,0,25)ImageButton5.BackgroundColor3=Color3.new(1,1,1)ImageButton5.BackgroundTransparency=1;ImageButton5.Image="rbxassetid://2790390993"ImageButton5.ImageColor3=Color3.new(0.478431,0.478431,0.478431)ImageButton5.ScaleType=Enum.ScaleType.Slice;ImageButton5.SliceCenter=Rect.new(Vector2.new(16,16),Vector2.new(240,240))ImageButton6.Name="v2"ImageButton6.Parent=Frame3;ImageButton6.Size=UDim2.new(0,20,0,25)ImageButton6.BackgroundColor3=Color3.new(1,1,1)ImageButton6.BackgroundTransparency=1;ImageButton6.LayoutOrder=1;ImageButton6.Image="rbxassetid://2790390993"ImageButton6.ImageColor3=Color3.new(1,0.501961,0)ImageButton6.ScaleType=Enum.ScaleType.Slice;ImageButton6.SliceCenter=Rect.new(Vector2.new(16,16),Vector2.new(240,240))ImageButton7.Name="v3"ImageButton7.Parent=Frame3;ImageButton7.Size=UDim2.new(0,20,0,25)ImageButton7.BackgroundColor3=Color3.new(1,1,1)ImageButton7.BackgroundTransparency=1;ImageButton7.LayoutOrder=2;ImageButton7.Image="rbxassetid://2790390993"ImageButton7.ImageColor3=Color3.new(1,0.501961,0)ImageButton7.ScaleType=Enum.ScaleType.Slice;ImageButton7.SliceCenter=Rect.new(Vector2.new(16,16),Vector2.new(240,240))ImageButton8.Name="v4"ImageButton8.Parent=Frame3;ImageButton8.Size=UDim2.new(0,20,0,25)ImageButton8.BackgroundColor3=Color3.new(1,1,1)ImageButton8.BackgroundTransparency=1;ImageButton8.LayoutOrder=3;ImageButton8.Image="rbxassetid://2790390993"ImageButton8.ImageColor3=Color3.new(1,0.501961,0)ImageButton8.ScaleType=Enum.ScaleType.Slice;ImageButton8.SliceCenter=Rect.new(Vector2.new(16,16),Vector2.new(240,240))ImageButton9.Name="v5"ImageButton9.Parent=Frame3;ImageButton9.Size=UDim2.new(0,20,0,25)ImageButton9.BackgroundColor3=Color3.new(1,1,1)ImageButton9.BackgroundTransparency=1;ImageButton9.LayoutOrder=4;ImageButton9.Image="rbxassetid://2790390993"ImageButton9.ImageColor3=Color3.new(1,0.501961,0)ImageButton9.ScaleType=Enum.ScaleType.Slice;ImageButton9.SliceCenter=Rect.new(Vector2.new(16,16),Vector2.new(240,240))ImageButton10.Name="v6"ImageButton10.Parent=Frame3;ImageButton10.Size=UDim2.new(0,20,0,25)ImageButton10.BackgroundColor3=Color3.new(1,1,1)ImageButton10.BackgroundTransparency=1;ImageButton10.LayoutOrder=5;ImageButton10.Image="rbxassetid://2790390993"ImageButton10.ImageColor3=Color3.new(1,0.501961,0)ImageButton10.ScaleType=Enum.ScaleType.Slice;ImageButton10.SliceCenter=Rect.new(Vector2.new(16,16),Vector2.new(240,240))ImageButton11.Name="v7"ImageButton11.Parent=Frame3;ImageButton11.Size=UDim2.new(0,20,0,25)ImageButton11.BackgroundColor3=Color3.new(1,1,1)ImageButton11.BackgroundTransparency=1;ImageButton11.LayoutOrder=6;ImageButton11.Image="rbxassetid://2790390993"ImageButton11.ImageColor3=Color3.new(1,0.501961,0)ImageButton11.ScaleType=Enum.ScaleType.Slice;ImageButton11.SliceCenter=Rect.new(Vector2.new(16,16),Vector2.new(240,240))ImageButton12.Name="v8"ImageButton12.Parent=Frame3;ImageButton12.Size=UDim2.new(0,20,0,25)ImageButton12.BackgroundColor3=Color3.new(1,1,1)ImageButton12.BackgroundTransparency=1;ImageButton12.LayoutOrder=7;ImageButton12.Image="rbxassetid://2790390993"ImageButton12.ImageColor3=Color3.new(1,0.501961,0)ImageButton12.ScaleType=Enum.ScaleType.Slice;ImageButton12.SliceCenter=Rect.new(Vector2.new(16,16),Vector2.new(240,240))ImageButton13.Name="v9"ImageButton13.Parent=Frame3;ImageButton13.Size=UDim2.new(0,20,0,25)ImageButton13.BackgroundColor3=Color3.new(1,1,1)ImageButton13.BackgroundTransparency=1;ImageButton13.LayoutOrder=8;ImageButton13.Image="rbxassetid://2790390993"ImageButton13.ImageColor3=Color3.new(1,0.501961,0)ImageButton13.ScaleType=Enum.ScaleType.Slice;ImageButton13.SliceCenter=Rect.new(Vector2.new(16,16),Vector2.new(240,240))ImageButton14.Name="v10"ImageButton14.Parent=Frame3;ImageButton14.Size=UDim2.new(0,20,0,25)ImageButton14.BackgroundColor3=Color3.new(1,1,1)ImageButton14.BackgroundTransparency=1;ImageButton14.LayoutOrder=9;ImageButton14.Image="rbxassetid://2790390993"ImageButton14.ImageColor3=Color3.new(1,0.501961,0)ImageButton14.ScaleType=Enum.ScaleType.Slice;ImageButton14.SliceCenter=Rect.new(Vector2.new(16,16),Vector2.new(240,240))ImageLabel15.Name="speaker"ImageLabel15.Parent=Frame2;ImageLabel15.Size=UDim2.new(1,0,1,0)ImageLabel15.BackgroundColor3=Color3.new(1,1,1)ImageLabel15.BackgroundTransparency=1;ImageLabel15.SizeConstraint=Enum.SizeConstraint.RelativeXX;ImageLabel15.Image="rbxassetid://5251812249"ImageLabel15.ImageRectSize=Vector2.new(512,512)Sound16.Name="volchng"Sound16.Parent=ScreenGui0;Sound16.SoundId="rbxassetid://2587991015"Sound16.Volume=1
-local sgui = ScreenGui0 
+local sgui = ScreenGui0
 sgui.mframe.con.speaker.Size = UDim2.new(.9,0,.9,0)
 sgui.mframe.con.speaker.Position = UDim2.new(.5,0,0,0)
 sgui.mframe.con.speaker.AnchorPoint = Vector2.new(.5,0)
+local blured_sfx = sgui.mframe.con.speaker:Clone()
+blured_sfx.Image = "rbxassetid://5313302761"
+blured_sfx.Parent = sgui.mframe.con.speaker
+blured_sfx.Name = "speaker_blur"
+blured_sfx.Size = UDim2.new(2,0,2,0)
+blured_sfx.AnchorPoint = Vector2.new(.5,.5)
+blured_sfx.Position = UDim2.new(.5,0,.5,0)
+local cur_audio = nil
 local tech = Instance.new("TextLabel",sgui.mframe.con.speaker)
 tech.Text = ""
 tech.BackgroundTransparency = 1
@@ -94,6 +102,7 @@ function get_playing()
 		end
 	end
 	if got then
+		cur_audio = got
 		local id = getid_from_string(got.SoundId)
 		local ainfo = get_ainfo(id,got)
 		return ainfo.Name .. " (" .. tostring(id) .. ")"
@@ -169,7 +178,9 @@ function setgfx(newgfx)
 	tsfx:Play()
 	game:GetService("Debris"):AddItem(tsfx,.55)
 end
-function lerp(a,b,t) return a * (1-t) + b * t end
+function lerp(a,b,t)
+	return a * (1-t) + b * t
+end
 local UIS = game:GetService("UserInputService")
 local ui_trans = 1
 local speed = 8
@@ -193,6 +204,15 @@ function update_vis(frametime)
 	sgui.mframe.ImageTransparency = ui_trans + .25
 	sgui.mframe.con.speaker.ImageTransparency = ui_trans
 	sgui.mframe.Size = UDim2.new(0,sgui.mframe.Size.X.Offset,0,281*((ui_trans*-1)+1))
+	if mode == 1 then
+		if cur_audio then
+			local next = ((cur_audio.PlaybackLoudness / 350)*-1)+1
+			local last = blured_sfx.ImageTransparency
+			blured_sfx.ImageTransparency = lerp(last,next,frametime*25)
+		else
+			blured_sfx.ImageTransparency = 0
+		end
+	end
 	for _,bar in pairs(sgui.mframe.con.bars:GetChildren()) do
 		if bar:IsA("ImageButton") then
 			if not tonumber(bar.Name) then
@@ -229,6 +249,7 @@ function update_vis(frametime)
 			bar.Size = UDim2.new(0,20,0,tonumber(bar.Name))
 			bar.ImageColor3 = Color3.fromRGB(r,g,b)
 			if mode == 1 then
+				blured_sfx.Visible = true
 				if real_val == 0 then
 					sgui.mframe.con.speaker.ImageRectOffset = sprite_sheet.vol_muted
 				end
@@ -242,6 +263,7 @@ function update_vis(frametime)
 					sgui.mframe.con.speaker.ImageRectOffset = sprite_sheet.vol_high
 				end
 			else
+				blured_sfx.Visible = false
 				if real_val == 0 then
 					sgui.mframe.con.speaker.ImageRectOffset = sprite_sheet.vol_muted
 				end
@@ -255,6 +277,7 @@ function update_vis(frametime)
 					sgui.mframe.con.speaker.ImageRectOffset = sprite_sheet.vol_high
 				end
 			end
+			blured_sfx.ImageRectOffset = blured_sfx.Parent.ImageRectOffset
 		end
 	end
 end
