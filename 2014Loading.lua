@@ -5,6 +5,7 @@ local ud2 = UDim2.new
 local coreGui = game:WaitForChild("CoreGui")
 local didVibe = nil
 local curSpin = nil
+local curFrame = nil
 function createOldTexture(Parent)
 	local oldTexture = Instance.new("ImageLabel",Parent)
 	oldTexture.Image = "rbxasset://textures/loading/darkLoadingTexture.png"
@@ -46,9 +47,9 @@ function vibeCheck(obj)
 	if obj.Name == "RobloxLoadingGui" then
 		local Frame = obj:FindFirstChildOfClass("Frame")
 		if Frame then
+			curFrame = Frame
 			Frame.ZIndex = 0
 			Frame.GraphicsFrame.LoadingImage.Visible = false
-			Frame.InfoFrame.PlaceIcon.ImageTransparency = 0
 			Frame.InfoFrame.PlaceIcon.ZIndex = 2
 			Frame.InfoFrame.Position = ud2(.05,0,0.95,0)
 			Frame.InfoFrame.AnchorPoint = vec2(0,1)
@@ -76,10 +77,10 @@ end
 function OnRender()
 	if didVibe and didVibe.Parent then
 		local t = (didVibe.Parent.BackgroundTransparency/2) + .5
-		didVibe.ImageTransparency = didVibe.Parent.BackgroundTransparency
-		curSpin.ImageTransparency = didVibe.Parent.BackgroundTransparency
-		curSpin.Parent.oldSpinnerText.TextTransparency = didVibe.Parent.BackgroundTransparency
-		didVibe.Parent.PlaceIcon.ImageTransparency = didVibe.Parent.BackgroundTransparency
+		didVibe.ImageTransparency = curFrame.BackgroundTransparency
+		curSpin.ImageTransparency = curFrame.BackgroundTransparency
+		curFrame.GraphicsFrame.oldSpinnerText.TextTransparency = curFrame.BackgroundTransparency
+		curFrame.InfoFrame.PlaceIcon.ImageTransparency = curFrame.BackgroundTransparency
 	end
 	vibeCheckAll()
 end
