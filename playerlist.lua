@@ -52,6 +52,7 @@ plat.BackgroundColor3 = Color3.new(1, 1, 1)
 plat.BackgroundTransparency = 1
 plat.Image = "rbxassetid://5273747925"
 plat.ImageRectSize = Vector2.new(512, 512)
+plat.Visible = false
 icn.Name = "icon"
 icn.Parent = pad
 icn.Position = UDim2.new(0, 25, 0, 0)
@@ -334,10 +335,15 @@ local function drawList()
 				HasIcon = true
 				player_item.pad.icon.Image = icon.friend
 			end
+			player_item.pad.icon.Position = player_item.pad.platform.Position
+			player_item.pad.platform:Destroy()
 			if not HasIcon then
 				player_item.pad.icon:Destroy()
-				player_item.pad.playername.Size = ud2(1,-35,1,0)
-				player_item.pad.playername.Position = ud2(0,25,0,0)
+				player_item.pad.playername.Size = ud2(1,-15,1,0)
+				player_item.pad.playername.Position = ud2(0,0,0,0)
+			else
+				player_item.pad.playername.Size = ud2(1, -35, 1, 0)
+				player_item.pad.playername.Position = ud2(0, 25, 0, 0)
 			end
 		end
 	end
