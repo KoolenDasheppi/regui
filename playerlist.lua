@@ -281,6 +281,9 @@ local function getPlayerList()
 end
 
 local function drawList()
+	if not ui.Enabled then
+		return
+	end
 	local allplayers = getPlayerList()
 	local base_plr = ui.list_frm.layout.player_item
 	local base_team = _base_teamlabel
