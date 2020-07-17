@@ -1,5 +1,6 @@
 [
   "vol_gfx_controller.lua",
   "playerlist.lua",
-  "2014Loading.lua"
+  "2014Loading.lua",
+  "escape_menu.lua"
 ]
