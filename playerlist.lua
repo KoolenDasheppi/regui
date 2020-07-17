@@ -371,9 +371,9 @@ if not game:GetService("RunService"):IsStudio() then
 	--local PlayerListMaster = game.CoreGui:WaitForChild("RobloxGui"):WaitForChild("PlayerListMaster"):WaitForChild("OffsetFrame"):WaitForChild("PlayerScrollList"):WaitForChild("SizeOffsetFrame"):WaitForChild("ScrollingFrameContainer"):WaitForChild("ScrollingFrameClippingFrame"):WaitForChild("ScollingFrame"):WaitForChild("OffsetUndoFrame")
 	local PlayerListMaster = game.CoreGui:WaitForChild("RobloxGui"):WaitForChild("PlayerListMaster")
 	PlayerListMaster.Changed:Connect(function()
-		PlayerListMaster.Visible = false
+		PlayerListMaster.Position = ud2(10, 0, 0, 0)
 	end)
-	PlayerListMaster.Visible = false
+	PlayerListMaster.Position = ud2(2, -4, 0, 4)
 end
 
 UIS.InputBegan:Connect(function(InpOBJ)
