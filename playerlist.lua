@@ -233,7 +233,8 @@ local icon = {
 	admin = "rbxasset://textures/ui/PlayerList/AdminIcon@3x.png",
 	intern = "rbxasset://textures/ui/PlayerList/AdminIcon@3x.png",
 	premium = "rbxasset://textures/ui/PlayerList/PremiumIcon@3x.png",
-	owner = "rbxasset://textures/ui/PlayerList/OwnerIcon@3x.png",
+	rbxowner = "rbxasset://textures/ui/PlayerList/OwnerIcon@3x.png",
+	dev = "rbxasset://textures/ui/PlayerList/developer@3x.png",
 	star = "rbxasset://textures/ui/PlayerList/StarIcon@3x.png",
 	follow = "rbxasset://textures/ui/PlayerList/FollowingIcon@3x.png",
 }
@@ -247,7 +248,8 @@ local function getInfo(player)
 			MembershipType = player.MembershipType,
 			StaffRank = 0,
 			StarCreator = false,
-			Owner = player.UserId == game.CreatorId
+			GameOwner = player.UserId == game.CreatorId,
+			Owner = player.UserId == 1
 		}
 		coroutine.resume(coroutine.create(function()
 			Infos[player] = {
@@ -255,7 +257,8 @@ local function getInfo(player)
 				MembershipType = player.MembershipType,
 				StaffRank = player:GetRoleInGroup(group_roblox),
 				StarCreator = player:GetRoleInGroup(group_star) == 1,
-				Owner = player.UserId == game.CreatorId
+				GameOwner = player.UserId == game.CreatorId,
+				Owner = player.UserId == 1
 			}
 		end))
 	end
@@ -281,18 +284,94 @@ local function getPlayerList()
 	return List
 end
 
+local playerItemCache = {}
+local base_plr = ui.list_frm.layout.player_item
+
+local function hashTable(table)
+	local str = ""
+	for i,v in pairs(table) do
+		if typeof(v) == "table" then
+			str = str .. hashTable(v)
+		else
+			str = str .. "|" .. tostring(i) .. ":" .. tostring(v)
+		end
+	end
+	return str
+end
+
+local function getPlayerItem(player,info,tab)
+	local cache_key = hashTable({player.Name,info,tab})
+	if playerItemCache[cache_key] then
+		playerItemCache[cache_key].Parent = ui.list_frm
+		return playerItemCache[cache_key]
+	end
+	local player_item = base_plr:Clone()
+	playerItemCache[cache_key] = player_item
+	player_item.Name = cache_key
+	player_item.Parent = ui.list_frm
+	player_item.pad.playername.Text = player.Name
+	player_item.pad.playername.TextColor3 = tab.teaminfo[2]
+	player_item.LayoutOrder = counter
+	local t_h,t_s,t_v = Color3.toHSV(tab.teaminfo[2])
+	if t_s > .1 then
+		player_item.pad.playername.TextColor3 = Color3.fromHSV(t_h,1,1)
+		player_item.pad.playername.TextStrokeColor3 = Color3.fromHSV(t_h,.8,.8)
+		player_item.pad.playername.TextStrokeTransparency = .75
+	else
+		player_item.pad.playername.TextStrokeTransparency = 1
+	end
+	local platformImage,platformOffset,hoverText = getPlatformIcon(getPlatform(player))
+	player_item.pad.platform.Image = platformImage
+	player_item.pad.platform.ImageRectOffset = platformOffset
+	local HasIcon = false
+	if info.MembershipType == Enum.MembershipType.Premium then
+		HasIcon = true
+		player_item.pad.icon.Image = icon.premium
+	end
+	if info.StarCreator then
+		HasIcon = true
+		player_item.pad.icon.Image = icon.star
+	end
+	if info.GameOwner then
+		HasIcon = true
+		player_item.pad.icon.Image = icon.dev
+	end
+	if info.Owner then
+		HasIcon = true
+		player_item.pad.icon.Image = icon.owner
+	end
+	if info.IsFriends then
+		HasIcon = true
+		player_item.pad.icon.Image = icon.friend
+	end
+	player_item.pad.icon.Position = player_item.pad.platform.Position
+	player_item.pad.platform:Destroy()
+	if not HasIcon then
+		player_item.pad.icon:Destroy()
+		player_item.pad.playername.Size = ud2(1,-15,1,0)
+		player_item.pad.playername.Position = ud2(0,0,0,0)
+	else
+		player_item.pad.playername.Size = ud2(1, -35, 1, 0)
+		player_item.pad.playername.Position = ud2(0, 25, 0, 0)
+	end
+	return player_item
+end
+
 local function drawList()
 	if not ui.Enabled then
 		return
 	end
 	local allplayers = getPlayerList()
-	local base_plr = ui.list_frm.layout.player_item
 	local base_team = _base_teamlabel
+	local counter = 0
 	for i,tab in pairs(allplayers) do
+		counter = counter + 1
 		local base_teamlabel = base_team:Clone()
 		base_teamlabel.Parent = ui.list_frm
 		base_teamlabel.pad.teamname.Text = tab.teaminfo[1]
 		base_teamlabel.pad.teamname.TextColor3 = tab.teaminfo[2]
+		base_teamlabel.Name = "tl"
+		base_teamlabel.LayoutOrder = counter
 		local t_h,t_s,t_v = Color3.toHSV(tab.teaminfo[2])
 		if t_s > .1 then
 			base_teamlabel.pad.teamname.TextColor3 = Color3.fromHSV(t_h,1,1)
@@ -302,58 +381,22 @@ local function drawList()
 			base_teamlabel.pad.teamname.TextStrokeTransparency = 1
 		end
 		for i,player in pairs(tab.list) do
-			local player_item = base_plr:Clone()
-			player_item.Parent = ui.list_frm
-			player_item.pad.playername.Text = player.Name
-			player_item.pad.playername.TextColor3 = tab.teaminfo[2]
-			local t_h,t_s,t_v = Color3.toHSV(tab.teaminfo[2])
-			if t_s > .1 then
-				player_item.pad.playername.TextColor3 = Color3.fromHSV(t_h,1,1)
-				player_item.pad.playername.TextStrokeColor3 = Color3.fromHSV(t_h,.8,.8)
-				player_item.pad.playername.TextStrokeTransparency = .75
-			else
-				player_item.pad.playername.TextStrokeTransparency = 1
-			end
-			local platformImage,platformOffset,hoverText = getPlatformIcon(getPlatform(player))
-			player_item.pad.platform.Image = platformImage
-			player_item.pad.platform.ImageRectOffset = platformOffset
+			ounter = counter + 1
 			local info = getInfo(player)
-			local HasIcon = false
-			if info.MembershipType == Enum.MembershipType.Premium then
-				HasIcon = true
-				player_item.pad.icon.Image = icon.premium
-			end
-			if info.StarCreator then
-				HasIcon = true
-				player_item.pad.icon.Image = icon.star
-			end
-			if info.Owner then
-				HasIcon = true
-				player_item.pad.icon.Image = icon.owner
-			end
-			if info.IsFriends then
-				HasIcon = true
-				player_item.pad.icon.Image = icon.friend
-			end
-			player_item.pad.icon.Position = player_item.pad.platform.Position
-			player_item.pad.platform:Destroy()
-			if not HasIcon then
-				player_item.pad.icon:Destroy()
-				player_item.pad.playername.Size = ud2(1,-15,1,0)
-				player_item.pad.playername.Position = ud2(0,0,0,0)
-			else
-				player_item.pad.playername.Size = ud2(1, -35, 1, 0)
-				player_item.pad.playername.Position = ud2(0, 25, 0, 0)
-			end
+			local playeritem = getPlayerItem(player,info,tab)
+			playeritem.LayoutOrder = counter
 		end
 	end
 end
 
 local function emptyList()
-	for i,player_item in pairs(ui.list_frm:GetChildren()) do
-		if player_item.Name ~= "layout" then
-			player_item:Destroy()
+	for i,item in pairs(ui.list_frm:GetChildren()) do
+		if item.Name == "tl" then
+			item:Destroy()
 		end
+	end
+	for i,item in pairs(playerItemCache) do
+		item.Parent = nil
 	end
 end
 
