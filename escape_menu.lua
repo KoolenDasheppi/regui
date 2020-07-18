@@ -1,5 +1,6 @@
 local robloxGui = game:GetService("CoreGui"):WaitForChild("RobloxGui")
 local hubBar = robloxGui.SettingsShield:WaitForChild("SettingsShield"):WaitForChild("MenuContainer"):WaitForChild("HubBar")
+local pageView = robloxGui.SettingsShield.SettingsShield.MenuContainer:WaitForChild("PageViewClipper"):WaitForChild("PageView")
 local reguiSettingsHub = hubBar:WaitForChild("GameSettingsTab"):Clone()
 reguiSettingsHub.Parent = hubBar
 reguiSettingsHub.Name = "RGSettingsTab"
@@ -18,12 +19,18 @@ local function setActive(hubItem)
     hubItem.Icon.ImageTransparency = 0
     hubItem.Icon.Title.TextTransparency = 0
     hubItem.TabSelection.Visible = true
+    if hubItem == reguiSettingsHub then
+        pageView.Visible = false
+    end
 end
 
 local function setUnactive(hubItem)
     hubItem.Icon.ImageTransparency = .5
     hubItem.Icon.Title.TextTransparency = .5
     hubItem.TabSelection.Visible = false
+    if hubItem == reguiSettingsHub then
+        pageView.Visible = true
+    end
 end
 
 setUnactive(reguiSettingsHub)
