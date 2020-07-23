@@ -252,14 +252,16 @@ local function getInfo(player)
 			Owner = player.UserId == 1
 		}
 		coroutine.resume(coroutine.create(function()
-			Infos[player] = {
-				IsFriends = player:IsFriendsWith(game.Players.LocalPlayer.UserId),
-				MembershipType = player.MembershipType,
-				StaffRank = player:GetRoleInGroup(group_roblox),
-				StarCreator = player:GetRoleInGroup(group_star) == 1,
-				GameOwner = player.UserId == game.CreatorId,
-				Owner = player.UserId == 1
-			}
+			pcall(function()
+				Infos[player] = {
+					IsFriends = player:IsFriendsWith(game.Players.LocalPlayer.UserId),
+					MembershipType = player.MembershipType,
+					StaffRank = player:GetRoleInGroup(group_roblox),
+					StarCreator = player:GetRoleInGroup(group_star) == 1,
+					GameOwner = player.UserId == game.CreatorId,
+					Owner = player.UserId == 1
+				}
+			end)
 		end))
 	end
 	return Infos[player]
@@ -403,7 +405,7 @@ end
 local function listChanged()
 	emptyList()
 	drawList()
-	ui.Enabled = game.StarterGui:GetCoreGuiEnabled(Enum.CoreGuiType.PlayerList)
+	ui.Enabled = game.StarterGui:GetCoreGuiEnabled(Enum.CoreGuiType.PlayerList) and (not escOpen)
 end
 
 game.Players.PlayerAdded:Connect(listChanged)
@@ -419,7 +421,20 @@ if not game:GetService("RunService"):IsStudio() then
 	PlayerListMaster.Position = ud2(2, -4, 0, 4)
 end
 
+local escOpen = false
+
+game:GetService("GuiService").MenuOpened:Connect(function()
+    escOpen = true
+end)
+
+game:GetService("GuiService").MenuClosed:Connect(function()
+    escOpen = false
+end)
+
 UIS.InputBegan:Connect(function(InpOBJ)
+	if escOpen then
+		return
+	end
 	if InpOBJ.KeyCode == Enum.KeyCode.Tab then
 		Open = not Open
 		if Open then
