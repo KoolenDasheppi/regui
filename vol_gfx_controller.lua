@@ -326,24 +326,69 @@ game:GetService("RunService").RenderStepped:Connect(function(ft)
 	end
 end)
 
+local function volUp()
+	last_press = elapsedTime()
+	ui_show_anim()
+	setvol(vol+1)
+end
+
+local function volDown()
+	last_press = elapsedTime()
+	ui_show_anim()
+	setvol(vol-1)
+end
+
+local function volMute()
+	last_press = elapsedTime()
+	ui_show_anim()
+	setvol(0)
+end
+
+local function gfxUp()
+	last_press = elapsedTime()
+	ui_show_anim()
+	setgfx(gfx+1)
+end
+
+local function gfxDown()
+	last_press = elapsedTime()
+	ui_show_anim()
+	setgfx(gfx-1)
+end
+
+local function gfxAuto()
+	last_press = elapsedTime()
+	ui_show_anim()
+	setgfx(0)
+end
+
 
 UIS.InputBegan:Connect(function(IO)
 	if IO.KeyCode == Enum.KeyCode.Equals and (ralt_held or lalt_held) then
-		last_press = elapsedTime()
-		ui_show_anim()
 		if lalt_held then
-			setvol(vol+1)
+			volUp()
 		else
-			setgfx(gfx+1)
+			gfxUp()
 		end
 	end
 	if IO.KeyCode == Enum.KeyCode.Minus and (ralt_held or lalt_held) then
-		last_press = elapsedTime()
-		ui_show_anim()
 		if lalt_held then
-			setvol(vol-1)
+			volDown()
 		else
-			setgfx(gfx-1)
+			gfxDown()
 		end
 	end
 end)
+
+_G.rg_vol_gfx_controller = {
+	vol = {
+		up = volUp,
+		down = volDown,
+		mute = volMute
+	},
+	gfx = {
+		up = gfxUp,
+		down = gfxDown,
+		auto = gfxAuto
+	}
+}
