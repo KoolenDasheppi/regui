@@ -10,3 +10,4 @@ this project is unfinished lol
 - Buggy mess
 - Messy code
 - A copied README.md from rb64-br
+- Volume (Left Alt +) and Graphics (Right Alt +) Keybinds
