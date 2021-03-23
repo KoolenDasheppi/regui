@@ -6,11 +6,10 @@ local ReGui = {
 	Update = function(self,RemoveOldDir)
 		--//Check for the ReGUI_V2
 		local ReGuiExists = self.Helper.Io:IsFolder(self.Directory)
+		local UpdateNeeded = false
 		if not ReGuiExists then
 			--//Create the ReGUI_V2 directory
 			self.Helper.Io:MakeFolder(self.Directory)
-			--//Create the Data directory
-			self.Helper.Io:MakeFolder(table.concat({self.Directory,"Data"},"/"))
 			--//Write LocalVersion.txt
 			self.Helper.Io:Write(
 				table.concat({self.Directory,"LocalVersion.txt"},"/"),
@@ -26,7 +25,8 @@ local ReGui = {
 			table.concat({self.GithubUrl,"Data","LatestVersion.txt"},"/")
 		)
 		print(LocalVersion,LatestVersion)
-		if LocalVersion ~= LatestVersion then
+		UpdateNeeded = (LocalVersion ~= LatestVersion) or (not ReGuiExists)
+		if UpdateNeeded then
 			--//Update LocalVersion.txt
 			self.Helper.Io:Write(
 				table.concat({self.Directory,"LocalVersion.txt"},"/"),
@@ -37,8 +37,12 @@ local ReGui = {
 				table.concat({self.GithubUrl,"Data","Install.json"},"/"),
 				true
 			)
-			--//Remove old Data folder
-			self.Helper.Io:DeleteFolder(table.concat({self.GithubUrl,"Data"}))
+			if self.Helper.Io:IsFolder(table.concat({self.Directory,"Data"},"/")) then
+				--//Remove old Data folder
+				self.Helper.Io:DeleteFolder(table.concat({self.Directory,"Data"},"/"))
+			end
+			--//Create the Data directory
+			self.Helper.Io:MakeFolder(table.concat({self.Directory,"Data"},"/"))
 			--//Download files
 			for InstructionId,IOInstruction in pairs(InstallInstructions) do
 				--[[
@@ -73,10 +77,11 @@ local HttpService = game:GetService("HttpService")
 ReGui.Helper.Http = {}
 
 function ReGui.Helper.Http:Get(Url,AutoDecode)
+	print("GET:/" .. Url)
 	if not AutoDecode then
 		return game:HttpGet(Url, true)
 	else
-		return self.Helper.Http:JSONDecode(game:HttpGet(Url, true))
+		return self:JSONDecode(game:HttpGet(Url, true))
 	end
 end
 
@@ -93,22 +98,27 @@ end
 ReGui.Helper.Io = {}
 
 function ReGui.Helper.Io:MakeFolder(NewFolder)
+	print("MakeFolder " .. NewFolder)
 	makefolder(NewFolder)
 end
 
-function ReGui.Helper.Io:DeleteFolder(NewFolder)
-	delfolder(NewFolder)
+function ReGui.Helper.Io:DeleteFolder(Folder)
+	print("DeleteFolder " .. Folder)
+	delfolder(Folder)
 end
 
-function ReGui.Helper.Io:IsFolder(NewFolder)
-	return isfolder(NewFolder)
+function ReGui.Helper.Io:IsFolder(Folder)
+	print("IsFolder " .. Folder)
+	return isfolder(Folder)
 end
 
 function ReGui.Helper.Io:Write(File,Contents)
+	print("Write " .. File)
 	writefile(File,Contents)
 end
 
 function ReGui.Helper.Io:Read(File)
+	print("Read " .. File)
 	return readfile(File)
 end
 
