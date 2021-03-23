@@ -82,11 +82,23 @@ local HttpService = game:GetService("HttpService")
 ReGui.Helper.Http = {}
 
 function ReGui.Helper.Http:Get(Url,AutoDecode)
-	print("GET:/" .. Url)
-	if not AutoDecode then
-		return game:HttpGet(Url, true)
+	local Response
+	if not syn then
+		print("GET:/" .. Url)
+		Response = game:HttpGet(Url, true)
 	else
-		return self:JSONDecode(game:HttpGet(Url, true))
+		print("GET:/" .. Url)
+		Response = syn.request{
+			Url = Url,
+			Method = "GET",
+		}
+		print(Response.StatusCode,Response.StatusMessage)
+		Response = Response.Body
+	end
+	if not AutoDecode then
+		return Response
+	else
+		return self:JSONDecode(Response)
 	end
 end
 

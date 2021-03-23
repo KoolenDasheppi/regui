@@ -3,6 +3,8 @@
 const fs = require("fs")
 const path = require("path")
 const dataDir = "..\\Data\\"
+const search = `\\\\`
+const replacer = new RegExp(search, 'g')
 
 var installArray = []
 
@@ -11,10 +13,10 @@ function traverseDir(dir) {
         let fullPath = path.join(dir, file);
         if (fs.lstatSync(fullPath).isDirectory()) {
             console.log(fullPath);
-            installArray[installArray.length] = [2,fullPath.replace(dataDir,"")]
+            installArray[installArray.length] = [2,fullPath.replace(dataDir,"").replace(replacer,"/")]
             traverseDir(fullPath);
         } else {
-            installArray[installArray.length] = [1,fullPath.replace(dataDir,"")]
+            installArray[installArray.length] = [1,fullPath.replace(dataDir,"").replace(replacer,"/")]
             console.log(fullPath);
         }  
     });
