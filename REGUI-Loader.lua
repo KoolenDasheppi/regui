@@ -3,6 +3,11 @@ local ReGui = {
 	GithubUrl = "https://raw.githubusercontent.com/HexaRG/regui/rewrite";
 	Directory = "ReGUI_V2";
 	Helper = {};
+	Log = function(...)
+		if _G.RGDebug then
+			print(...)
+		end
+	end;
 	Update = function(self,RemoveOldDir)
 		--//Check for the ReGUI_V2
 		local ReGuiExists = self.Helper.Io:IsFolder(self.Directory)
@@ -44,6 +49,7 @@ local ReGui = {
 			--//Create the Data directory
 			self.Helper.Io:MakeFolder(table.concat({self.Directory,"Data"},"/"))
 			--//Download files
+			local CompletedInstructions = 0
 			for InstructionId,IOInstruction in pairs(InstallInstructions) do
 				--[[
 				IOInstruction : Table
@@ -53,18 +59,23 @@ local ReGui = {
 					2 : Path (String)
 				]]
 				if IOInstruction[1] == 1 then
-					self.Helper.Io:Write(
-						table.concat({self.Directory,"Data",IOInstruction[2]},"/"),
-						self.Helper.Http:Get(
-							table.concat({self.GithubUrl,"Data",IOInstruction[2]},"/")
+					coroutine.resume(coroutine.create(function()
+						self.Helper.Io:Write(
+							table.concat({self.Directory,"Data",IOInstruction[2]},"/"),
+							self.Helper.Http:Get(
+								table.concat({self.GithubUrl,"Data",IOInstruction[2]},"/")
+							)
 						)
-					)
+						CompletedInstructions += 1
+					end))
 				elseif IOInstruction[1] == 2 then
 					self.Helper.Io:MakeFolder(
 						table.concat({self.Directory,"Data",IOInstruction[2]},"/")
 					)
+					CompletedInstructions += 1
 				end
 			end
+			repeat game:GetService("RunService").RenderStepped:Wait() until CompletedInstructions == #InstallInstructions
 		end
 	end;
 	Run = function(self)
