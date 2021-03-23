@@ -14,7 +14,7 @@ local ReGui = {
 			self.Helper.Io:Write(
 				table.concat({self.Directory,"LocalVersion.txt"},"/"),
 				self.Helper.Http:Get(
-					table.concat({self.GithubUrl,"Data","LatestVersion.txt"},"/")
+					table.concat({self.GithubUrl,"UpdateInfo","LatestVersion.txt"},"/")
 				)
 			)
 		end
@@ -22,7 +22,7 @@ local ReGui = {
 			table.concat({self.Directory,"LocalVersion.txt"},"/")
 		)
 		local LatestVersion = self.Helper.Http:Get(
-			table.concat({self.GithubUrl,"Data","LatestVersion.txt"},"/")
+			table.concat({self.GithubUrl,"UpdateInfo","LatestVersion.txt"},"/")
 		)
 		print(LocalVersion,LatestVersion)
 		UpdateNeeded = (LocalVersion ~= LatestVersion) or (not ReGuiExists)
@@ -34,7 +34,7 @@ local ReGui = {
 			)
 			--//Get install instructions
 			local InstallInstructions = self.Helper.Http:Get(
-				table.concat({self.GithubUrl,"Data","Install.json"},"/"),
+				table.concat({self.GithubUrl,"LocalVersion","Install.json"},"/"),
 				true
 			)
 			if self.Helper.Io:IsFolder(table.concat({self.Directory,"Data"},"/")) then
@@ -54,18 +54,23 @@ local ReGui = {
 				]]
 				if IOInstruction[1] == 1 then
 					self.Helper.Io:Write(
-						table.concat({self.GithubUrl,IOInstruction[2]},"/"),
+						table.concat({self.Directory,"Data",IOInstruction[2]},"/"),
 						self.Helper.Http:Get(
 							table.concat({self.GithubUrl,"Data",IOInstruction[2]},"/")
 						)
 					)
 				elseif IOInstruction[1] == 2 then
 					self.Helper.Io:MakeFolder(
-						table.concat({self.GithubUrl,"Data",IOInstruction[2]},"/")
+						table.concat({self.Directory,"Data",IOInstruction[2]},"/")
 					)
 				end
 			end
 		end
+	end;
+	Run = function()
+		loadstring(self.Helper.Io:Read(
+			table.concat({self.Directory,"Data","Main.lua"},"/"),
+		))()
 	end;
 }
 --//Helpers
@@ -122,6 +127,7 @@ function ReGui.Helper.Io:Read(File)
 	return readfile(File)
 end
 
+getgenv()._ReGui = ReGui
 
 ReGui:Update()
 
