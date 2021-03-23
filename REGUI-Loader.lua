@@ -34,7 +34,7 @@ local ReGui = {
 			)
 			--//Get install instructions
 			local InstallInstructions = self.Helper.Http:Get(
-				table.concat({self.GithubUrl,"LocalVersion","Install.json"},"/"),
+				table.concat({self.GithubUrl,"UpdateInfo","Install.json"},"/"),
 				true
 			)
 			if self.Helper.Io:IsFolder(table.concat({self.Directory,"Data"},"/")) then
@@ -67,9 +67,9 @@ local ReGui = {
 			end
 		end
 	end;
-	Run = function()
+	Run = function(self)
 		loadstring(self.Helper.Io:Read(
-			table.concat({self.Directory,"Data","Main.lua"},"/"),
+			table.concat({self.Directory,"Data","Main.lua"},"/")
 		))()
 	end;
 }
@@ -130,5 +130,4 @@ end
 getgenv()._ReGui = ReGui
 
 ReGui:Update()
-
 ReGui:Run()

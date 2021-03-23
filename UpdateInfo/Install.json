@@ -1,18 +1,1 @@
-[
-    [
-        1,
-        "Main.lua"
-    ],
-    [
-        2,
-        "Modules"
-    ],
-    [
-        2,
-        "Plugins"
-    ],
-    [
-        2,
-        "Plugins/RGNotifications"
-    ]
-]
+[[2,"Assets"],[2,"Assets\\UI"],[2,"Assets\\UI\\EscMenu"],[1,"Assets\\UI\\EscMenu\\ColorableMenuBackground.png"],[1,"Assets\\UI\\EscMenu\\RGSettings.png"],[2,"Assets\\UI\\RGToogle"],[1,"Assets\\UI\\RGToogle\\RGToggleBall.png"],[1,"Assets\\UI\\RGToogle\\RGToggleInner.png"],[1,"Assets\\UI\\RGToogle\\RGToggleOutline.png"],[1,"Main.lua"],[2,"Modules"],[2,"Plugins"],[2,"Plugins\\RGGraphics"],[1,"Plugins\\RGGraphics\\Icons.png"],[2,"Plugins\\RGNotifacations"],[2,"Plugins\\RGPlayerlist"],[2,"Plugins\\RGPlayerlist\\PlatformIcons"],[1,"Plugins\\RGPlayerlist\\PlatformIcons\\01.png"],[1,"Plugins\\RGPlayerlist\\PlatformIcons\\02.png"],[1,"Plugins\\RGPlayerlist\\PlatformIcons\\03.png"],[2,"Plugins\\RGVolume"],[1,"Plugins\\RGVolume\\BluredIcons.png"],[1,"Plugins\\RGVolume\\Icons.png"]]
