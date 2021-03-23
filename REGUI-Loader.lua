@@ -29,7 +29,7 @@ local ReGui = {
 		local LatestVersion = self.Helper.Http:Get(
 			table.concat({self.GithubUrl,"UpdateInfo","LatestVersion.txt"},"/")
 		)
-		print(LocalVersion,LatestVersion)
+		self.Log(LocalVersion,LatestVersion)
 		UpdateNeeded = (LocalVersion ~= LatestVersion) or (not ReGuiExists)
 		if UpdateNeeded then
 			--//Update LocalVersion.txt
@@ -95,15 +95,15 @@ ReGui.Helper.Http = {}
 function ReGui.Helper.Http:Get(Url,AutoDecode)
 	local Response
 	if not syn then
-		print("GET:/" .. Url)
+		ReGui.Log("GET:/" .. Url)
 		Response = game:HttpGet(Url, true)
 	else
-		print("GET:/" .. Url)
+		ReGui.Log("GET:/" .. Url)
 		Response = syn.request{
 			Url = Url,
 			Method = "GET",
 		}
-		print(Response.StatusCode,Response.StatusMessage)
+		ReGui.Log(Response.StatusCode,Response.StatusMessage)
 		Response = Response.Body
 	end
 	if not AutoDecode then
@@ -126,27 +126,27 @@ end
 ReGui.Helper.Io = {}
 
 function ReGui.Helper.Io:MakeFolder(NewFolder)
-	print("MakeFolder " .. NewFolder)
+	ReGui.Log("MakeFolder " .. NewFolder)
 	makefolder(NewFolder)
 end
 
 function ReGui.Helper.Io:DeleteFolder(Folder)
-	print("DeleteFolder " .. Folder)
+	ReGui.Log("DeleteFolder " .. Folder)
 	delfolder(Folder)
 end
 
 function ReGui.Helper.Io:IsFolder(Folder)
-	print("IsFolder " .. Folder)
+	ReGui.Log("IsFolder " .. Folder)
 	return isfolder(Folder)
 end
 
 function ReGui.Helper.Io:Write(File,Contents)
-	print("Write " .. File)
+	ReGui.Log("Write " .. File)
 	writefile(File,Contents)
 end
 
 function ReGui.Helper.Io:Read(File)
-	print("Read " .. File)
+	ReGui.Log("Read " .. File)
 	return readfile(File)
 end
 
