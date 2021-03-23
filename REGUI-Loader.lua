@@ -101,44 +101,6 @@ function ReGui.Helper.Io:Read(File)
 	readfile(File)
 end
 
---//Check for the ReGUI_V2
-local ReGuiExists = isfolder(ReGui.Directory)
-if not ReGuiExists then
-	--//Create the ReGUI_V2 directory
-	IoHelper:MakeFolder(ReGui.Directory)
-	IoHelper:Write(
-		table.concat({ReGui.Directory,"LocalVersion.txt"},"/"),
-		HttpHelper:Get(
-			table.concat({ReGui.GithubUrl,"LatestVersion.txt"},"/")
-		)
-	)
-	
-else
-	output("checking for updates")
-	local loc_version = readfile("regui/version.txt")
-	local lat_version = download("version.txt")
-	if loc_version ~= lat_version then
-		output("updating")
-		local scripts = listfiles("regui\\scripts")
-		output("clearing scripts")
-		for i,path in  pairs(scripts) do
-			delfile(path)
-		end
-		downloadscripts()
-		writefile("regui/version.txt",lat_version)
-	else
-		output("running the latest version")
-	end
-end
-output("retrieving files located in regui\\scripts")
-local scripts = listfiles("regui\\scripts")
-output("executing scripts found in regui\\scripts")
-for i,path in  pairs(scripts) do
-	output("reading " .. path)
-	local script = readfile(path)
-	output("executing " .. path)
-	coroutine.resume(coroutine.create(function(source)
-		loadstring(source)()
-	end),script)
-	output("executed " .. path)
-end
+ReGui:Update()
+
+ReGui:Run()
