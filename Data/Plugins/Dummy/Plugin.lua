@@ -6,23 +6,23 @@ return function(LocalPath)
             Creator = "Dummy";
             Thumb = {
                 StaticThumb = _ReGui.Helper.Asset:Get(
-                    table.concat({LocalPath,"DummyThumb.png"},"/")
-                )
+                    _ReGui.Helper.Path:Join(LocalPath,"DummyThumb.png")
+                );
                 AnimThumb = _ReGui.Helper.Asset:Get(
-                    table.concat({LocalPath,"DummyHover.webm"},"/")
-                )
+                    _ReGui.Helper.Path:Join(LocalPath,"DummyHover.webm")
+                );
             };
         };
         Storage = {};
         IsEnabled = false;
-        DummyPlugin.Enable = function(self)
+        Enable = function(self)
             self.IsEnabled = true
             _ReGui:Log("DummyPlugin: Enabled")
-        end
-        DummyPlugin.Disable = function(self)
+        end;
+        Disable = function(self)
             self.IsEnabled = false
             _ReGui:Log("DummyPlugin: Disabled")
-        end
+        end;
     }
 
     return DummyPlugin

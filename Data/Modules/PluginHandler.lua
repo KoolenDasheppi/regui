@@ -5,24 +5,24 @@ return function(LocalPath)
             LoadedPlugins = {};
         };
         GetPlugin = function(self,PluginName)
-            if not self.LoadedPlugins[PluginName] then
-                self.LoadedPlugins[PluginName] = loadstring(table.concat({_ReGui.Directory,"Data","Plugins","PluginName","Plugin.lua"},"/"))()(table.concat({_ReGui.Directory,"Data","Plugins","PluginName"},"/"))z
+            if not self.Storage.LoadedPlugins[PluginName] then
+                self.Storage.LoadedPlugins[PluginName] = _ReGui.Helper:Require(_ReGui.Helper.Path:Join(_ReGui.Directory,"Data","Plugins",PluginName),"Plugin.lua")
             end
-            return self.LoadedPlugins[PluginName]
+            return self.Storage.LoadedPlugins[PluginName]
         end;
         GetPlugins = function(self)
-            return _ReGui.Helper.Io:ListFiles(table.concat({_ReGui.Directory,"Data","Plugins"},"/"))
+            return _ReGui.Helper.Io:ListFiles(_ReGui.Helper.Path:Join(_ReGui.Directory,"Data","Plugins"))
         end;
         IsLoaded = function(self)
-            return self.LoadedPlugins[PluginName] ~= nil
+            return self.Storage.LoadedPlugins[PluginName] ~= nil
         end;
         Unload = function(self,PluginName)
-            local Plugin = self.LoadedPlugins[PluginName]
+            local Plugin = self.Storage.LoadedPlugins[PluginName]
             if Plugin then
                 if Plugin.IsEnabled then
                     Plugin:Disable()
                 end
-                self.LoadedPlugins[PluginName] = nil
+                self.Storage.LoadedPlugins[PluginName] = nil
             end
         end;
     }

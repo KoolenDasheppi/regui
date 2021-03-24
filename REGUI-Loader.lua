@@ -12,42 +12,43 @@ local ReGui = {
 		--//Check for the ReGUI_V2
 		local ReGuiExists = self.Helper.Io:IsFolder(self.Directory)
 		local UpdateNeeded = false
+		local Path = self.Helper.Path
 		if not ReGuiExists then
 			--//Create the ReGUI_V2 directory
 			self.Helper.Io:MakeFolder(self.Directory)
 			--//Write LocalVersion.txt
 			self.Helper.Io:Write(
-				table.concat({self.Directory,"LocalVersion.txt"},"/"),
+				Path:Join(self.Directory,"LocalVersion.txt"),
 				self.Helper.Http:Get(
-					table.concat({self.GithubUrl,"UpdateInfo","LatestVersion.txt"},"/")
+					Path:Join(self.GithubUrl,"UpdateInfo","LatestVersion.txt")
 				)
 			)
 		end
 		local LocalVersion = self.Helper.Io:Read(
-			table.concat({self.Directory,"LocalVersion.txt"},"/")
+			Path:Join(self.Directory,"LocalVersion.txt")
 		)
 		local LatestVersion = self.Helper.Http:Get(
-			table.concat({self.GithubUrl,"UpdateInfo","LatestVersion.txt"},"/")
+			Path:Join(self.GithubUrl,"UpdateInfo","LatestVersion.txt")
 		)
 		self:Log(LocalVersion,LatestVersion)
 		UpdateNeeded = (LocalVersion ~= LatestVersion) or (not ReGuiExists)
 		if UpdateNeeded then
 			--//Update LocalVersion.txt
 			self.Helper.Io:Write(
-				table.concat({self.Directory,"LocalVersion.txt"},"/"),
+				Path:Join(self.Directory,"LocalVersion.txt"),
 				LatestVersion
 			)
 			--//Get install instructions
 			local InstallInstructions = self.Helper.Http:Get(
-				table.concat({self.GithubUrl,"UpdateInfo","Install.json"},"/"),
+				Path:Join(self.GithubUrl,"UpdateInfo","Install.json"),
 				true
 			)
-			if self.Helper.Io:IsFolder(table.concat({self.Directory,"Data"},"/")) then
+			if self.Helper.Io:IsFolder(Path:Join(self.Directory,"Data")) then
 				--//Remove old Data folder
-				self.Helper.Io:DeleteFolder(table.concat({self.Directory,"Data"},"/"))
+				self.Helper.Io:DeleteFolder(Path:Join(self.Directory,"Data"))
 			end
 			--//Create the Data directory
-			self.Helper.Io:MakeFolder(table.concat({self.Directory,"Data"},"/"))
+			self.Helper.Io:MakeFolder(Path:Join(self.Directory,"Data"))
 			--//Download files
 			local CompletedInstructions = 0
 			for InstructionId,IOInstruction in pairs(InstallInstructions) do
@@ -61,9 +62,9 @@ local ReGui = {
 				if IOInstruction[1] == 1 then
 					coroutine.resume(coroutine.create(function()
 						self.Helper.Io:Write(
-							table.concat({self.Directory,"Data",IOInstruction[2]},"/"),
+							Path:Join(self.Directory,"Data",IOInstruction[2]),
 							self.Helper.Http:Get(
-								table.concat({self.GithubUrl,"Data",IOInstruction[2]},"/")
+								Path:Join(self.GithubUrl,"Data",IOInstruction[2])
 							)
 						)
 						CompletedInstructions += 1
@@ -71,7 +72,7 @@ local ReGui = {
 					wait()
 				elseif IOInstruction[1] == 2 then
 					self.Helper.Io:MakeFolder(
-						table.concat({self.Directory,"Data",IOInstruction[2]},"/")
+						Path:Join(self.Directory,"Data",IOInstruction[2])
 					)
 					CompletedInstructions += 1
 				end
@@ -80,9 +81,10 @@ local ReGui = {
 		end
 	end;
 	Run = function(self)
-		loadstring(self.Helper.Io:Read(
-			table.concat({self.Directory,"Data","Main.lua"},"/")
-		))()
+		--[[loadstring(self.Helper.Io:Read(
+			self.Helper.Path:Join(self.Directory,"Data","Main.lua")
+		))()]]
+		self.Helper:Require(self.Helper.Path:Join(self.Directory,"Data"),"Main.lua")
 	end;
 }
 --//Helpers
@@ -172,11 +174,32 @@ end
 ReGui.Helper.Asset = {}
 
 function ReGui.Helper.Asset:Get(Path)
+	ReGui:Log("GetAsset " .. Path)
 	if not syn then
 		return "rbxasset://textures/meshPartFallback.png"
 	else
 		return getsynasset(Path)
 	end
+end
+
+--//Path
+
+ReGui.Helper.Path = {}
+
+function ReGui.Helper.Path:Join(...)
+	local vars = {...}
+	return table.concat(vars,"/")
+end
+
+--//RG Require
+
+function ReGui.Helper:Require(ModulePath,ModuleName)
+	local LoadedString = loadstring(ReGui.Helper.Io:Read(ReGui.Helper.Path:Join(ModulePath,ModuleName)))
+	if not LoadedString then
+		ReGui:Log(ReGui.Helper.Path:Join(ModulePath,ModuleName),"failed to load")
+	end
+	local OutputModule = LoadedString()(ModulePath)
+	return OutputModule
 end
 
 getgenv()._ReGui = ReGui
