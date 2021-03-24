@@ -3,7 +3,7 @@ local ReGui = {
 	GithubUrl = "https://raw.githubusercontent.com/HexaRG/regui/rewrite";
 	Directory = "ReGUI_V2";
 	Helper = {};
-	Log = function(...)
+	Log = function(self,...)
 		if _G.RGDebug then
 			print(...)
 		end
