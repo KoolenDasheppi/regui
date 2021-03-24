@@ -29,7 +29,7 @@ local ReGui = {
 		local LatestVersion = self.Helper.Http:Get(
 			table.concat({self.GithubUrl,"UpdateInfo","LatestVersion.txt"},"/")
 		)
-		self.Log(LocalVersion,LatestVersion)
+		self:Log(LocalVersion,LatestVersion)
 		UpdateNeeded = (LocalVersion ~= LatestVersion) or (not ReGuiExists)
 		if UpdateNeeded then
 			--//Update LocalVersion.txt
@@ -68,6 +68,7 @@ local ReGui = {
 						)
 						CompletedInstructions += 1
 					end))
+					wait()
 				elseif IOInstruction[1] == 2 then
 					self.Helper.Io:MakeFolder(
 						table.concat({self.Directory,"Data",IOInstruction[2]},"/")
@@ -95,15 +96,15 @@ ReGui.Helper.Http = {}
 function ReGui.Helper.Http:Get(Url,AutoDecode)
 	local Response
 	if not syn then
-		ReGui.Log("GET:/" .. Url)
+		ReGui:Log("GET:/" .. Url)
 		Response = game:HttpGet(Url, true)
 	else
-		ReGui.Log("GET:/" .. Url)
+		ReGui:Log("GET:/" .. Url)
 		Response = syn.request{
 			Url = Url,
 			Method = "GET",
 		}
-		ReGui.Log(Response.StatusCode,Response.StatusMessage)
+		ReGui:Log(Response.StatusCode,Response.StatusMessage)
 		Response = Response.Body
 	end
 	if not AutoDecode then
@@ -125,29 +126,57 @@ end
 
 ReGui.Helper.Io = {}
 
+function ReGui.Helper.Io:ListFiles(Path)
+	ReGui:Log("List " .. Path)
+	return listfiles(Path)
+end
+
 function ReGui.Helper.Io:MakeFolder(NewFolder)
-	ReGui.Log("MakeFolder " .. NewFolder)
+	ReGui:Log("MakeFolder " .. NewFolder)
 	makefolder(NewFolder)
 end
 
 function ReGui.Helper.Io:DeleteFolder(Folder)
-	ReGui.Log("DeleteFolder " .. Folder)
+	ReGui:Log("DeleteFolder " .. Folder)
 	delfolder(Folder)
 end
 
 function ReGui.Helper.Io:IsFolder(Folder)
-	ReGui.Log("IsFolder " .. Folder)
+	ReGui:Log("IsFolder " .. Folder)
 	return isfolder(Folder)
 end
 
+function ReGui.Helper.Io:Read(File)
+	ReGui:Log("Read " .. File)
+	return readfile(File)
+end
+
 function ReGui.Helper.Io:Write(File,Contents)
-	ReGui.Log("Write " .. File)
+	ReGui:Log("Write " .. File)
 	writefile(File,Contents)
 end
 
-function ReGui.Helper.Io:Read(File)
-	ReGui.Log("Read " .. File)
-	return readfile(File)
+function ReGui.Helper.Io:Delete(File)
+	ReGui:Log("Delete " .. File)
+	delfile(File)
+end
+
+function ReGui.Helper.Io:IsFile(File)
+	ReGui:Log("IsFile " .. File)
+	return isfile(File)
+end
+
+
+--//Asset
+
+ReGui.Helper.Asset = {}
+
+function ReGui.Helper.Asset:Get(Path)
+	if not syn then
+		return "rbxasset://textures/meshPartFallback.png"
+	else
+		return getsynasset(Path)
+	end
 end
 
 getgenv()._ReGui = ReGui
