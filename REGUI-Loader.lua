@@ -174,6 +174,8 @@ end
 ReGui.Helper.Asset = {}
 
 function ReGui.Helper.Asset:Get(Path)
+	--Automatically removes "../" using string.gsub magic (that took me longer to figure how to use than it should of) as it is unsupported when using getsynasset
+	Path = string.gsub(Path,"/%a+/%.%./","/")
 	ReGui:Log("GetAsset " .. Path)
 	if not syn then
 		return "rbxasset://textures/meshPartFallback.png"
