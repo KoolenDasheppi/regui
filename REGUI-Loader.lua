@@ -175,7 +175,7 @@ ReGui.Helper.Asset = {}
 
 function ReGui.Helper.Asset:Get(Path)
 	--Automatically removes "../" using string.gsub magic (that took me longer to figure how to use than it should of) as it is unsupported when using getsynasset
-	Path = string.gsub(Path,"/%a+/%.%./","/")
+	Path = Path:gsub("/%a+/%.%./","/"):gsub("\\","/")
 	ReGui:Log("GetAsset " .. Path)
 	if not syn then
 		return "rbxasset://textures/meshPartFallback.png"
@@ -189,8 +189,9 @@ end
 ReGui.Helper.Path = {}
 
 function ReGui.Helper.Path:Join(...)
-	local vars = {...}
-	return table.concat(vars,"/")
+	local Vars = {...}
+	local Path = table.concat(Vars,"/"):gsub("/%a+/%.%./","/"):gsub("\\","/")
+	return Path
 end
 
 --//RG Require

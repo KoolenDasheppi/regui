@@ -16,6 +16,7 @@ return function(LocalPath)
             MEM.Stored[HubItem.TabSelection] = 0
             local RenderSteppedEvent
             RenderSteppedEvent = game:GetService("RunService").RenderStepped:Connect(function(DeltaTime)
+                DeltaTime = math.clamp(DeltaTime,0,1/30)
                 HubItem.Icon.ImageTransparency = Lerp(MEM.Stored[HubItem.Icon],0,DeltaTime*25)
                 MEM.Stored[HubItem.Icon] = HubItem.Icon.ImageTransparency
                 HubItem.Icon.Title.TextTransparency = Lerp(MEM.Stored[HubItem.Icon.Title],0,DeltaTime*25)
