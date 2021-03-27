@@ -5,7 +5,7 @@ return function(LocalPath)
         for _,Panel in pairs(SettingsMenu.PanelsFrame.Contents:GetChildren()) do
             if Panel:IsA("Frame") then
                 Panel.PanelButton.Image = _ReGui.Helper.Asset:Get(_ReGui.Helper.Path:Join(LocalPath,"..","Assets","UI","EscMenu","Settings",Panel:GetAttribute("PanelReference"),"Icon.png"))
-                local PanelObject = game:GetObjects(_ReGui.Helper.Asset:Get(_ReGui.Helper.Path:Join(LocalPath,"..","Assets","UI","EscMenu","Settings",Panel:GetAttribute("PanelReference"),"Panel.rbxm")))[1]
+                local PanelObject = _ReGui.Helper.Asset:Insert(_ReGui.Helper.Path:Join(LocalPath,"..","Assets","UI","EscMenu","Settings",Panel:GetAttribute("PanelReference"),"Panel.rbxm"))[1]
                 PanelObject.Name = Panel:GetAttribute("PanelReference")
                 local PanelEvent = Instance.new("BindableEvent")
                 _ReGui.Helper:Require(_ReGui.Helper.Path:Join(LocalPath,"..","Assets","UI","EscMenu","Settings",Panel:GetAttribute("PanelReference")),"Panel.lua")(PanelObject,PanelEvent.Event)

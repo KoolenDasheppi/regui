@@ -4,12 +4,18 @@ return function(LocalPath)
         Storage = {
             LoadedPlugins = {};
         };
-        GetPlugin = function(self,PluginName)
-            if not self.Storage.LoadedPlugins[PluginName] then
-                self.Storage.LoadedPlugins[PluginName] = _ReGui.Helper:Require(_ReGui.Helper.Path:Join(_ReGui.Directory,"Data","Plugins",PluginName),"Plugin.lua")
+        GetPluginMeta = function(self,PluginName)
+            local Meta =  game:GetService("HttpService"):JSONDecode(
+                _ReGui.Helper.Io:Read(_ReGui.Helper.Path:Join(_ReGui.Directory,"Data","Plugins",PluginName,"Plugin.json"))  
+            )
+            for Key,Value in pairs(Meta.Thumb) do
+                Meta.Thumb[Key] = _ReGui.Helper.Asset:Get(
+                    _ReGui.Helper.Path:Join(_ReGui.Directory,"Data","Plugins",PluginName,Value)
+                );
             end
-            return self.Storage.LoadedPlugins[PluginName]
+            return Meta
         end;
+
         GetPlugins = function(self)
             local PluginList = _ReGui.Helper.Io:ListFiles(_ReGui.Helper.Path:Join(_ReGui.Directory,"Data","Plugins"))
             local FinalList = {}
@@ -23,6 +29,7 @@ return function(LocalPath)
             end
             return FinalList
         end;
+
         IsLoaded = function(self)
             return self.Storage.LoadedPlugins[PluginName] ~= nil
         end;
@@ -34,6 +41,41 @@ return function(LocalPath)
                 end
                 self.Storage.LoadedPlugins[PluginName] = nil
             end
+        end;
+
+        Load = function(self,PluginName)
+            if not self.Storage.LoadedPlugins[PluginName] then
+                self.Storage.LoadedPlugins[PluginName] = _ReGui.Helper:Require(_ReGui.Helper.Path:Join(_ReGui.Directory,"Data","Plugins",PluginName),"Plugin.lua")
+            end
+            return self.Storage.LoadedPlugins[PluginName]
+        end;
+
+        WasEnabled = function(self,PluginName)
+            local JSONPath = _ReGui.Helper.Path:Join(_ReGui.Directory,"EnabledPlugins.json")
+            local EnabledPlugins
+            if _ReGui.Helper.Io:IsFile(JSONPath) then
+                EnabledPlugins = game:GetService("HttpService"):JSONDecode(_ReGui.Helper.Io:Read(JSONPath))
+            else
+                EnabledPlugins = {}
+                _ReGui.Helper.Io:Write(JSONPath,game:GetService("HttpService"):JSONEncode(EnabledPlugins))
+            end
+
+            return EnabledPlugins
+        end;
+
+        SetWasEnabled = function(self,PluginName,Enabled)
+            local JSONPath = _ReGui.Helper.Path:Join(_ReGui.Directory,"EnabledPlugins.json")
+            local EnabledPlugins
+
+            if _ReGui.Helper.Io:IsFile(JSONPath) then
+                EnabledPlugins = game:GetService("HttpService"):JSONDecode(_ReGui.Helper.Io:Read(JSONPath))
+            else
+                EnabledPlugins = {}
+                _ReGui.Helper.Io:Write(JSONPath,game:GetService("HttpService"):JSONEncode(EnabledPlugins))
+            end
+
+            EnabledPlugins[PluginName] = Enabled
+            _ReGui.Helper.Io:Write(JSONPath,game:GetService("HttpService"):JSONEncode(EnabledPlugins))
         end;
     }
 

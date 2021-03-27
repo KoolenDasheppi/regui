@@ -184,6 +184,13 @@ function ReGui.Helper.Asset:Get(Path)
 	end
 end
 
+function ReGui.Helper.Asset:Insert(Path)
+	--Automatically removes "../" using string.gsub magic (that took me longer to figure how to use than it should of) as it is unsupported when using getsynasset
+	Path = Path:gsub("/%a+/%.%./","/"):gsub("\\","/")
+	ReGui:Log("Insert " .. Path)
+	return game:GetObjects(ReGui.Helper.Asset:Get(Path))
+end
+
 --//Path
 
 ReGui.Helper.Path = {}

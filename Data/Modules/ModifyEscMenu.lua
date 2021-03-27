@@ -12,7 +12,7 @@ return function(LocalPath)
     syn.protect_gui(MEM.ReGuiInnerFrame)
     MEM.ReGuiInnerFrame.Parent = MEM.PageViewInnerFrame.Parent
     MEM.ReGuiInnerFrame:ClearAllChildren()
-    MEM.ReGuiSettingsMenu = game:GetObjects(_ReGui.Helper.Asset:Get(_ReGui.Helper.Path:Join(LocalPath,"..","Assets","UI","EscMenu","Settings","SettingsMenu.rbxm")))[1]
+    MEM.ReGuiSettingsMenu = _ReGui.Helper.Asset:Insert(_ReGui.Helper.Path:Join(LocalPath,"..","Assets","UI","EscMenu","Settings","SettingsMenu.rbxm"))[1]
     MEM.ReGuiSettingsMenu.Parent = MEM.ReGuiInnerFrame
     MEM.PanelHandler = _ReGui.Helper:Require(LocalPath,"PanelHandler.lua")
     MEM.PanelHandler(MEM.ReGuiSettingsMenu)

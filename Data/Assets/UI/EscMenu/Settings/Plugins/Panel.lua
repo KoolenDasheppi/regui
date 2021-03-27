@@ -6,14 +6,24 @@ return function(LocalPath)
 
         local function GetPluginList()
             local Plugins = _ReGui.PluginHandler:GetPlugins()
+            local NewList = {}
             for i,PluginName in pairs(Plugins) do
-                Plugins[i] = _ReGui.PluginHandler:GetPlugin(PluginName)
+                NewList[PluginName] = {
+                    Meta = _ReGui.PluginHandler:GetPluginMeta(PluginName);
+                    IsEnabled = _ReGui.PluginHandler:WasEnabled(PluginName);
+                    IsLoaded = false;
+                }
+                if NewList[PluginName].IsEnabled then
+                    NewList[PluginName] = _ReGui.PluginHandler:Load(PluginName)
+                    NewList[PluginName].Meta = _ReGui.PluginHandler:GetPluginMeta(PluginName)
+                    NewList[PluginName].IsLoaded = true
+                end
             end
-            return Plugins
+            return NewList
         end
         
         local PluginsList
-        local PluginItemPlaceholder = game:GetObjects(_ReGui.Helper.Asset:Get(_ReGui.Helper.Path:Join(LocalPath,"PluginItem.rbxm")))[1]
+        local PluginItemPlaceholder = _ReGui.Helper.Asset:Insert(_ReGui.Helper.Path:Join(LocalPath,"PluginItem.rbxm"))[1]
 
         local ToggleTweenInfo = TweenInfo.new(
             .5, -- Time
@@ -58,25 +68,28 @@ return function(LocalPath)
             end
 
             --//Create the plugin items
-            for _,Plugin in pairs(PluginsList) do
+            for PluginName,Plugin in pairs(PluginsList) do
                 local PluginItem = PluginItemPlaceholder:Clone()
                 PluginItem.Contents.PluginIconFrame.PluginIcon.Image = Plugin.Meta.Thumb.StaticThumb
-                PluginItem.Contents.PluginIconFrame.PluginVideo.Video = Plugin.Meta.Thumb.AnimThumb
+                if Plugin.Meta.Thumb.AnimThumb then
+                    PluginItem.Contents.PluginIconFrame.PluginVideo.Video = Plugin.Meta.Thumb.AnimThumb
+                    PluginItem.Contents.PluginIconFrame.PluginVideo.Visible = false
+                    table.insert(UIEvents,PluginItem.Contents.MouseEnter:Connect(function()
+                        PluginItem.Contents.PluginIconFrame.PluginVideo.Visible = true
+                        PluginItem.Contents.PluginIconFrame.PluginVideo.TimePosition = 0
+                        PluginItem.Contents.PluginIconFrame.PluginVideo:Play()
+                    end))
+    
+                    table.insert(UIEvents,PluginItem.Contents.MouseLeave:Connect(function()
+                        PluginItem.Contents.PluginIconFrame.PluginVideo.Visible = false
+                        PluginItem.Contents.PluginIconFrame.PluginVideo:Pause()
+                    end))
+                else
+                    PluginItem.Contents.PluginIconFrame.PluginVideo:Destroy()
+                end
                 PluginItem.Contents.TextArea.Title.Text = Plugin.Meta.Title
                 PluginItem.Contents.TextArea.Desc.Text = Plugin.Meta.Desc
                 PluginItem.Contents.TextArea.Creator.Text = "Created by: " .. Plugin.Meta.Creator
-                PluginItem.Contents.PluginIconFrame.PluginVideo.Visible = false
-
-                table.insert(UIEvents,PluginItem.Contents.MouseEnter:Connect(function()
-                    PluginItem.Contents.PluginIconFrame.PluginVideo.Visible = true
-                    PluginItem.Contents.PluginIconFrame.PluginVideo.TimePosition = 0
-                    PluginItem.Contents.PluginIconFrame.PluginVideo:Play()
-                end))
-
-                table.insert(UIEvents,PluginItem.Contents.MouseLeave:Connect(function()
-                    PluginItem.Contents.PluginIconFrame.PluginVideo.Visible = false
-                    PluginItem.Contents.PluginIconFrame.PluginVideo:Pause()
-                end))
 
                 PluginItem.Contents.ToggleFrame.Visible = true
                 PluginItem.Contents.ToggleFrame.RGToggleInner.Image = _ReGui.Helper.Asset:Get(_ReGui.Helper.Path:Join(LocalPath,"RGToggle","RGToggleInner.png"))
@@ -91,7 +104,8 @@ return function(LocalPath)
                         BallTween:Play()
                         ColorTween1:Play()
                         ColorTween2:Play()
-                        Plugin:Disable()
+                        Plugin:Disable(i)
+                        _ReGui.PluginHandler:Unload()
                     else
                         local BallTween = TweenService:Create(PluginItem.Contents.ToggleFrame.RGToggleBall, ToggleTweenInfo, ToggleEnabledGoal)
                         local ColorTween1 = TweenService:Create(PluginItem.Contents.ToggleFrame.RGToggleInner, ToggleTweenInfo, ToggleEnabledColor)
@@ -101,6 +115,7 @@ return function(LocalPath)
                         ColorTween2:Play()
                         Plugin:Enable()
                     end
+                    _ReGui.PluginHandler:SetWasEnabled(PluginName,Plugin.IsEnabled)
                 end))
 
                 if Plugin.IsEnabled then
@@ -111,7 +126,14 @@ return function(LocalPath)
                         PluginItem.Contents.ToggleFrame.RGToggleInner[Key] = Value
                         PluginItem.Contents.ToggleFrame.RGToggleOutline[Key] = Value
                     end
+                    --_ReGui.PluginHandler:Unload(PluginName)
+                    --Plugins[PluginName].IsLoaded = false
                 else
+                    if not Plugin.IsLoaded then
+                        PluginsList[PluginName] = _ReGui.PluginHandler:Load(PluginName)
+                        PluginsList[PluginName].Meta = _ReGui.PluginHandler:GetPluginMeta(PluginName)
+                        PluginsList[PluginName].IsLoaded = true
+                    end
                     for Key,Value in pairs(ToggleDisabledGoal) do
                         PluginItem.Contents.ToggleFrame.RGToggleBall[Key] = Value
                     end
