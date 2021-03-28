@@ -46,12 +46,9 @@ return function(LocalPath)
                         NotifBase.Button1:Destroy()
                         NotifBase.ButtonSep:Destroy()
                         NotifBase.Button2.Text = ConfigTable.Button1
-                        NotifBase.Button2.TextSize = NotifBase.Button2.AbsoluteSize.Y * 0.75
                     else
                         NotifBase.Button1.Text = ConfigTable.Button1
-                        NotifBase.Button1.TextSize = NotifBase.Button1.AbsoluteSize.Y * 0.75
                         NotifBase.Button2.Text = ConfigTable.Button2
-                        NotifBase.Button2.TextSize = NotifBase.Button2.AbsoluteSize.Y * 0.75
                     end
                 else
                     NotifBase.Button1:Destroy()
@@ -59,9 +56,7 @@ return function(LocalPath)
                     NotifBase.ButtonSep:Destroy()
                 end
                 NotifBase.Title.Text = ConfigTable.Title
-                NotifBase.Title.TextSize = NotifBase.Title.AbsoluteSize.Y
                 NotifBase.Main.Text = ConfigTable.Text
-                NotifBase.Main.TextSize = NotifBase.Main.AbsoluteSize.Y * 0.75
                 local Slot = 0
                 local SearchingForSlot = true
                 while SearchingForSlot do
@@ -146,6 +141,15 @@ return function(LocalPath)
                     end))
                 end
                 coroutine.resume(coroutine.create(function()
+                    game:GetService("RunService").RenderStepped:Wait()
+                    NotifBase.Title.TextSize = NotifBase.Title.AbsoluteSize.Y
+                    NotifBase.Main.TextSize = NotifBase.Title.AbsoluteSize.Y * 0.75
+                    if not ConfigTable.Button2 then
+                        NotifBase.Button2.TextSize = NotifBase.Title.AbsoluteSize.Y * 0.75
+                    else
+                        NotifBase.Button1.TextSize = NotifBase.Title.AbsoluteSize.Y * 0.75
+                        NotifBase.Button2.TextSize = NotifBase.Title.AbsoluteSize.Y * 0.75
+                    end
                     wait(ConfigTable.Duration + 1)
                     self.NotifSlots[tostring(Slot)] = false
                     NotifBase:Destroy()
