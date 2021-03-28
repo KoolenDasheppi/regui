@@ -7,7 +7,7 @@
 A complete overhaul of the roblox UI
 
 ```lua
-loadstring(game:HttpGet('https://github.com/HexaRG/regui/blob/rewrite/REGUI-Loader.lua'))()
+loadstring(game:HttpGet('https://raw.githubusercontent.com/HexaRG/regui/rewrite/REGUI-Loader.lua'))()
 ```
 
 ![Alt text](/Img/RobloxPlayerBeta_OPKa3yOwBi.png?raw=true "WIP Plugins")
