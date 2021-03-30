@@ -2,9 +2,9 @@ local jsonLib = require("json")
 
 local jsonPath = "../Install.json"
 local dataPath = "../Install.data"
-local jsonFile = io.open(jsonPath,"r+")
+local jsonFileRead = io.open(jsonPath,"rb")
 local dataFile = io.open(dataPath,"wb")
-local decodedJson = jsonLib.decode(jsonFile:read())
+local decodedJson = jsonLib.decode(jsonFileRead:read())
 local dataContents = ""
 for _,InstallInstruction in pairs(decodedJson) do
 	if InstallInstruction[1] == 1 then
@@ -16,4 +16,5 @@ for _,InstallInstruction in pairs(decodedJson) do
 end
 local newJson = jsonLib.encode(decodedJson)
 dataFile:write(dataContents)
-jsonFile:write(newJson)
+local jsonFileWrite = io.open(jsonPath,"wb")
+jsonFileWrite:write(newJson)

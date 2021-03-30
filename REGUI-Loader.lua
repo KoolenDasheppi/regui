@@ -63,6 +63,7 @@ local ReGui = {
 						1: File
 						2: Folder
 					2 : Path (String)
+					3: DataLength (Number)
 				]]
 				if IOInstruction[1] == 1 then
 					self.Helper.Io:Write(
