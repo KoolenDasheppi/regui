@@ -46,7 +46,6 @@ local ReGui = {
 			local InstallData = self.Helper.Http:Get(
 				Path:Join(self.GithubUrl,"UpdateInfo","Install.data")
 			)
-			print(#InstallData)
 			local DataOffset = 1
 			if self.Helper.Io:IsFolder(Path:Join(self.Directory,"Data")) then
 				--//Remove old Data folder
@@ -119,7 +118,6 @@ function ReGui.Helper.Http:Get(Url,AutoDecode,AutoDecompress)
 		Response = ReGui.Helper.Compression:Decompress(Response)
 	end
 	if AutoDecode then
-		print(Response)
 		Response = self:JSONDecode(Response)
 	end
 	return Response
