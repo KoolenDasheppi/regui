@@ -1,3 +1,5 @@
+-- luajit
+
 local jsonLib = require("json")
 
 local jsonPath = "../Install.json"

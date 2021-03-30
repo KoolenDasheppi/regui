@@ -28,6 +28,8 @@ return function(LocalPath)
                 0 -- DelayTime
             )
 
+            local OGNotifBase = _ReGui.Helper.Asset:Insert(_ReGui.Helper.Path:Join(LocalPath,"NotifBase.rbxm"))[1]
+
             function self.Storage:NotifSend(ConfigTable)
                 --//Run this in a xpcall so if the JSONEncode fails the notif will still work
                 --//Because emojis cause JSONEncode errors for some reason idk why
@@ -38,7 +40,7 @@ return function(LocalPath)
                     _ReGui:Log("[Error] " .. Error)
                 end)
                 local TweenService = game:GetService("TweenService")
-                local NotifBase = _ReGui.Helper.Asset:Insert(_ReGui.Helper.Path:Join(LocalPath,"NotifBase.rbxm"))[1]
+                local NotifBase = OGNotifBase:Clone()
                 NotifBase.Icon.Image = ConfigTable.Icon or _ReGui.Helper.Asset:Get(_ReGui.Helper.Path:Join(LocalPath,"NotifBell.png"))
                 NotifBase.TimerBar.Cover.Fade.Image = _ReGui.Helper.Asset:Get(_ReGui.Helper.Path:Join(LocalPath,"RGNotifCover.png"))
                 if ConfigTable.Button1 then
@@ -156,6 +158,11 @@ return function(LocalPath)
                 end))
                 NotifBase.Parent = self.NotifUI.NotifsArea
             end
+
+            self.Storage.NotifSendEvent = Instance.new("BindableEvent")
+            self.Storage.NotifSendEvent.Event:Connect(function(...)
+                self.Storage:NotifSend(...)
+            end)
             --[[
             self.AlignRS = game:GetService("RunService").RenderStepped:Connect(function(DeltaTime)
                 local Index = 0
@@ -186,7 +193,7 @@ return function(LocalPath)
                     local NamecallMethod = getnamecallmethod()
     
                     if NamecallMethod == "SetCore" and Args[1] == "SendNotification" and NotifPlugin.IsEnabled then
-                        return NotifPlugin.Storage:NotifSend(Args[2])
+                        return NotifPlugin.Storage.NotifSendEvent:Fire(Args[2])
                     end
                 
                     return OldNameCall(Self, ...)
