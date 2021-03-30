@@ -16,7 +16,7 @@ function traverseDir(dir) {
             installArray[installArray.length] = [2,fullPath.replace(dataDir,"").replace(replacer,"/")]
             traverseDir(fullPath);
         } else {
-            installArray[installArray.length] = [1,fullPath.replace(dataDir,"").replace(replacer,"/"),fs.readFileSync(fullPath).toString('ascii')]
+            installArray[installArray.length] = [1,fullPath.replace(dataDir,"").replace(replacer,"/")]
             console.log(fullPath);
         }  
     });

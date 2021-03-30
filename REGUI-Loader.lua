@@ -40,10 +40,13 @@ local ReGui = {
 			)
 			--//Get install instructions
 			local InstallInstructions = self.Helper.Http:Get(
-				Path:Join(self.GithubUrl,"UpdateInfo","Install.lzw"),
+				Path:Join(self.GithubUrl,"UpdateInfo","Install.json"),
 				true,
-				true
 			)
+			local InstallData = self.Helper.Http:Get(
+				Path:Join(self.GithubUrl,"UpdateInfo","Install.data"),
+			)
+			local DataOffset = 1
 			if self.Helper.Io:IsFolder(Path:Join(self.Directory,"Data")) then
 				--//Remove old Data folder
 				self.Helper.Io:DeleteFolder(Path:Join(self.Directory,"Data"))
@@ -64,8 +67,13 @@ local ReGui = {
 					coroutine.resume(coroutine.create(function()
 						self.Helper.Io:Write(
 							Path:Join(self.Directory,"Data",IOInstruction[2]),
-							IOInstruction[3]
+							string.sub(
+								InstallData,
+								DataOffset,
+								DataOffset + IOInstruction[3]
+							)
 						)
+						DataOffset += IOInstruction[3]
 						CompletedInstructions += 1
 					end))
 				elseif IOInstruction[1] == 2 then
@@ -111,6 +119,7 @@ function ReGui.Helper.Http:Get(Url,AutoDecode,AutoDecompress)
 		Response = ReGui.Helper.Compression:Decompress(Response)
 	end
 	if AutoDecode then
+		print(Response)
 		Response = self:JSONDecode(Response)
 	end
 	return Response
@@ -248,7 +257,7 @@ local function tobase10(value)
 	return n
 end
 
-ReGui.Helper.Compression:Compress(text)
+function ReGui.Helper.Compression:Compress(text)
 	local dictionary = copy(dictionary)
 	local key, sequence, size = "", {}, #dictionary
 	local width, spans, span = 1, {}, 0
@@ -276,7 +285,7 @@ ReGui.Helper.Compression:Compress(text)
     return table.concat(spans, ",").."|"..table.concat(sequence)
 end
 
-ReGui.Helper.Compression:Decompress(text)
+function ReGui.Helper.Compression:Decompress(text)
 	local dictionary = copy(dictionary)
 	local sequence, spans, content = {}, text:match("(.-)|(.*)")
 	local groups, start = {}, 1

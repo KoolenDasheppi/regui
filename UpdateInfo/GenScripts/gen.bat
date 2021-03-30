@@ -1,2 +1,2 @@
 node genInstall.js
-luajit.exe compress.lua
+luajit.exe createData.lua
