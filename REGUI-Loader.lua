@@ -8,15 +8,65 @@ local ReGui = {
 			print(...)
 		end
 	end;
+	MakeInstallGui = function(self)
+		local function uuid()
+			local template ='xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'
+			return string.gsub(template, '[xy]', function (c)
+				local v = (c == 'x') and math.random(0, 0xf) or math.random(8, 0xb)
+				return string.format('%x', v)
+			end)
+		end
+		local InstallingGui = Instance.new("ScreenGui")
+		InstallingGui.Name = uuid()
+		InstallingGui.IgnoreGuiInset = true
+		local MainWindow = Instance.new("Frame",InstallingGui)
+		MainWindow.Name = "MainWindow"
+		MainWindow.BackgroundColor3 = Color3.fromRGB(70, 75, 86)
+		MainWindow.AnchorPoint = Vector2.new(0.5, 0.5)
+		MainWindow.Position = UDim2.new(0.5, 0, 0.5, 0)
+		MainWindow.Size = UDim2.new(0.7, 0, 0.4, 0)
+		MainWindow.SizeConstraint = Enum.SizeConstraint.RelativeYY
+		local UICorner = Instance.new("UICorner",MainWindow)
+		UICorner.CornerRadius = UDim.new(0.05, 0)
+		local TopBar = Instance.new("Frame",MainWindow)
+		TopBar.Name = "TopBar"
+		TopBar.BackgroundColor3 = Color3.fromRGB(58.5, 63, 72)
+		TopBar.Size = UDim2.new(1, 0, 0.05, 0)
+		TopBar.BorderSizePixel = 0
+		local Title = Instance.new("TextLabel",TopBar)
+		Title.Name = "Title"
+		Title.Text = "ReGui Installer"
+		Title.BackgroundTransparency = 1
+		Title.Size = UDim2.new(1, 0, 1, 0)
+		Title.TextScaled = true
+		Title.TextColor3 = Color3.new(1, 1, 1)
+		local Status = Instance.new("TextLabel",MainWindow)
+		Status.Name = "Status"
+		Status.Text = ""
+		Status.TextScaled = true
+		Status.BackgroundTransparency = 1
+		Status.AnchorPoint = Vector2.new(0.5, 0.5)
+		Status.Position = UDim2.new(0.5, 0, 0.5, 0)
+		Status.Size = UDim2.new(1, 0, 0.05, 0)
+		Status.TextColor3 = Color3.new(1, 1, 1)
+		return InstallingGui
+	end;
 	Update = function(self,RemoveOldDir)
 		--//Check for the ReGUI_V2
+		local InstallingGui = self:MakeInstallGui()
+		if syn then
+			syn.protect_gui(InstallingGui)
+		end
+		InstallingGui.Parent = game:GetService("CoreGui")
 		local ReGuiExists = self.Helper.Io:IsFolder(self.Directory)
 		local UpdateNeeded = false
 		local Path = self.Helper.Path
 		if not ReGuiExists then
 			--//Create the ReGUI_V2 directory
+			InstallingGui.MainWindow.Status.Text = ("Creating the %s directory"):format(self.Directory)
 			self.Helper.Io:MakeFolder(self.Directory)
 			--//Write LocalVersion.txt
+			InstallingGui.MainWindow.Status.Text = "Writing LocalVersion.txt"
 			self.Helper.Io:Write(
 				Path:Join(self.Directory,"LocalVersion.txt"),
 				self.Helper.Http:Get(
@@ -24,9 +74,11 @@ local ReGui = {
 				)
 			)
 		end
+		InstallingGui.MainWindow.Status.Text = "Reading LocalVersion.txt"
 		local LocalVersion = self.Helper.Io:Read(
 			Path:Join(self.Directory,"LocalVersion.txt")
 		)
+		InstallingGui.MainWindow.Status.Text = "Fetching LatestVersion.txt"
 		local LatestVersion = self.Helper.Http:Get(
 			Path:Join(self.GithubUrl,"UpdateInfo","LatestVersion.txt")
 		)
@@ -34,23 +86,28 @@ local ReGui = {
 		UpdateNeeded = (LocalVersion ~= LatestVersion) or (not ReGuiExists)
 		if UpdateNeeded then
 			--//Update LocalVersion.txt
+			InstallingGui.MainWindow.Status.Text = "Writing LocalVersion.txt"
 			self.Helper.Io:Write(
 				Path:Join(self.Directory,"LocalVersion.txt"),
 				LatestVersion
 			)
 			--//Get install instructions
+			InstallingGui.MainWindow.Status.Text = "Fetching Install.json"
 			local InstallInstructions = self.Helper.Http:Get(
 				Path:Join(self.GithubUrl,"UpdateInfo","Install.json"),
 				true
 			)
+			InstallingGui.MainWindow.Status.Text = "Fetching Install.data"
 			local InstallData = self.Helper.Http:Get(
 				Path:Join(self.GithubUrl,"UpdateInfo","Install.data")
 			)
 			local DataOffset = 1
 			if self.Helper.Io:IsFolder(Path:Join(self.Directory,"Data")) then
 				--//Remove old Data folder
+				InstallingGui.MainWindow.Status.Text = "Removing data folder"
 				self.Helper.Io:DeleteFolder(Path:Join(self.Directory,"Data"))
 			end
+			InstallingGui.MainWindow.Status.Text = "Creating data folder"
 			--//Create the Data directory
 			self.Helper.Io:MakeFolder(Path:Join(self.Directory,"Data"))
 			--//Download files
@@ -65,6 +122,7 @@ local ReGui = {
 					3: DataLength (Number)
 				]]
 				if IOInstruction[1] == 1 then
+					InstallingGui.MainWindow.Status.Text = "Write " .. IOInstruction[2]
 					self.Helper.Io:Write(
 						Path:Join(self.Directory,"Data",IOInstruction[2]),
 						string.sub(
@@ -73,17 +131,21 @@ local ReGui = {
 							DataOffset + (IOInstruction[3])
 						)
 					)
+					game:GetService("RunService").RenderStepped:Wait()
 					DataOffset += (IOInstruction[3] + 1)
 					CompletedInstructions += 1
 				elseif IOInstruction[1] == 2 then
+					InstallingGui.MainWindow.Status.Text = "Create " .. IOInstruction[2]
 					self.Helper.Io:MakeFolder(
 						Path:Join(self.Directory,"Data",IOInstruction[2])
 					)
+					game:GetService("RunService").RenderStepped:Wait()
 					CompletedInstructions += 1
 				end
 			end
 			repeat game:GetService("RunService").RenderStepped:Wait() until CompletedInstructions == #InstallInstructions
 		end
+		InstallingGui:Destroy()
 	end;
 	Run = function(self)
 		--[[loadstring(self.Helper.Io:Read(
