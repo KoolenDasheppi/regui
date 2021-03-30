@@ -70,10 +70,10 @@ local ReGui = {
 						string.sub(
 							InstallData,
 							DataOffset,
-							DataOffset + (IOInstruction[3] - 1)
+							DataOffset + (IOInstruction[3])
 						)
 					)
-					DataOffset += IOInstruction[3]
+					DataOffset += (IOInstruction[3] + 1)
 					CompletedInstructions += 1
 				elseif IOInstruction[1] == 2 then
 					self.Helper.Io:MakeFolder(
