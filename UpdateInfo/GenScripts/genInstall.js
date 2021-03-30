@@ -2,7 +2,7 @@
 
 const fs = require("fs")
 const path = require("path")
-const dataDir = "..\\Data\\"
+const dataDir = "..\\..\\Data\\"
 const search = `\\\\`
 const replacer = new RegExp(search, 'g')
 
@@ -16,7 +16,7 @@ function traverseDir(dir) {
             installArray[installArray.length] = [2,fullPath.replace(dataDir,"").replace(replacer,"/")]
             traverseDir(fullPath);
         } else {
-            installArray[installArray.length] = [1,fullPath.replace(dataDir,"").replace(replacer,"/")]
+            installArray[installArray.length] = [1,fullPath.replace(dataDir,"").replace(replacer,"/"),fs.readFileSync(fullPath).toString('ascii')]
             console.log(fullPath);
         }  
     });
@@ -25,4 +25,4 @@ traverseDir(dataDir)
 
 console.log(installArray)
 
-fs.writeFileSync("Install.json",JSON.stringify(installArray))
+fs.writeFileSync("../Install.json",JSON.stringify(installArray))

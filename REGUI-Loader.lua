@@ -40,7 +40,8 @@ local ReGui = {
 			)
 			--//Get install instructions
 			local InstallInstructions = self.Helper.Http:Get(
-				Path:Join(self.GithubUrl,"UpdateInfo","Install.json"),
+				Path:Join(self.GithubUrl,"UpdateInfo","Install.lzw"),
+				true,
 				true
 			)
 			if self.Helper.Io:IsFolder(Path:Join(self.Directory,"Data")) then
@@ -63,13 +64,10 @@ local ReGui = {
 					coroutine.resume(coroutine.create(function()
 						self.Helper.Io:Write(
 							Path:Join(self.Directory,"Data",IOInstruction[2]),
-							self.Helper.Http:Get(
-								Path:Join(self.GithubUrl,"Data",IOInstruction[2])
-							)
+							IOInstruction[3]
 						)
 						CompletedInstructions += 1
 					end))
-					wait()
 				elseif IOInstruction[1] == 2 then
 					self.Helper.Io:MakeFolder(
 						Path:Join(self.Directory,"Data",IOInstruction[2])
@@ -95,7 +93,7 @@ local HttpService = game:GetService("HttpService")
 
 ReGui.Helper.Http = {}
 
-function ReGui.Helper.Http:Get(Url,AutoDecode)
+function ReGui.Helper.Http:Get(Url,AutoDecode,AutoDecompress)
 	local Response
 	if not syn then
 		ReGui:Log("GET:/" .. Url)
@@ -109,11 +107,13 @@ function ReGui.Helper.Http:Get(Url,AutoDecode)
 		ReGui:Log(Response.StatusCode,Response.StatusMessage)
 		Response = Response.Body
 	end
-	if not AutoDecode then
-		return Response
-	else
-		return self:JSONDecode(Response)
+	if AutoDecompress then
+		Response = ReGui.Helper.Compression:Decompress(Response)
 	end
+	if AutoDecode then
+		Response = self:JSONDecode(Response)
+	end
+	return Response
 end
 
 function ReGui.Helper.Http:JSONDecode(JSON)
@@ -210,6 +210,101 @@ function ReGui.Helper:Require(ModulePath,ModuleName)
 	end
 	local OutputModule = LoadedString()(ModulePath)
 	return OutputModule
+end
+
+--//Compression (Source: https://devforum.roblox.com/t/text-compression/163637)
+
+ReGui.Helper.Compression = {}
+
+local dictionary = {}
+for i = 1, 127 do
+	local c = string.char(i)
+	dictionary[c], dictionary[i-1] = i-1, c
+end
+
+local function copy(t)
+	local new = {}
+	for k, v in pairs(t) do
+		new[k] = v
+	end
+	return new
+end
+
+local function tobase127(n)
+	local value = ""
+	repeat
+		local remainder = n%127
+		value = dictionary[remainder]..value
+		n = (n - remainder)/127
+	until n == 0
+	return value
+end
+
+local function tobase10(value)
+	local n = 0
+	for i = 1, #value do
+		n = n + 127^(i-1)*dictionary[value:sub(-i, -i)]
+	end
+	return n
+end
+
+ReGui.Helper.Compression:Compress(text)
+	local dictionary = copy(dictionary)
+	local key, sequence, size = "", {}, #dictionary
+	local width, spans, span = 1, {}, 0
+	local function listkey(key)
+		local value = tobase127(dictionary[key])
+		if #value > width then
+			width, span, spans[width] = #value, 0, span
+		end
+		sequence[#sequence+1] = ("\1"):rep(width - #value)..value
+		span = span + 1
+	end
+	for i = 1, #text do
+		local c = text:sub(i, i)
+		local new = key..c
+		if dictionary[new] then
+			key = new
+		else
+			listkey(key)
+			key, size = c, size+1
+			dictionary[new], dictionary[size] = size, new
+		end
+	end
+    listkey(key)
+	spans[width] = span
+    return table.concat(spans, ",").."|"..table.concat(sequence)
+end
+
+ReGui.Helper.Compression:Decompress(text)
+	local dictionary = copy(dictionary)
+	local sequence, spans, content = {}, text:match("(.-)|(.*)")
+	local groups, start = {}, 1
+	for span in spans:gmatch("%d+") do
+		local width = #groups+1
+		groups[width] = content:sub(start, start + span*width - 1)
+		start = start + span*width
+	end
+	local previous;
+	for width = 1, #groups do
+		for value in groups[width]:gmatch(('.'):rep(width)) do
+			local entry = dictionary[tobase10(value)]
+			if previous then
+				if entry then
+					sequence[#sequence+1] = entry
+					dictionary[#dictionary+1] = previous..entry:sub(1, 1)
+				else
+					entry = previous..previous:sub(1, 1)
+					sequence[#sequence+1] = entry
+					dictionary[#dictionary+1] = entry
+				end
+			else
+				sequence[1] = entry
+			end
+			previous = entry
+		end
+	end
+    return table.concat(sequence)
 end
 
 getgenv()._ReGui = ReGui
