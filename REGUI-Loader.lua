@@ -70,7 +70,7 @@ local ReGui = {
 						string.sub(
 							InstallData,
 							DataOffset,
-							DataOffset + IOInstruction[3]
+							DataOffset + (IOInstruction[3] - 1)
 						)
 					)
 					DataOffset += IOInstruction[3]

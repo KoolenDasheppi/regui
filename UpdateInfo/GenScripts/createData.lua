@@ -10,7 +10,7 @@ for _,InstallInstruction in pairs(decodedJson) do
 	if InstallInstruction[1] == 1 then
 		local file = io.open("../../Data/" .. InstallInstruction[2],"rb")
 		local data = file:read("*all")
-		InstallInstruction[3] = #data - 1
+		InstallInstruction[3] = #data
 		dataContents = dataContents .. data
 	end
 end
