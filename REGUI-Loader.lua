@@ -41,11 +41,12 @@ local ReGui = {
 			--//Get install instructions
 			local InstallInstructions = self.Helper.Http:Get(
 				Path:Join(self.GithubUrl,"UpdateInfo","Install.json"),
-				true,
+				true
 			)
 			local InstallData = self.Helper.Http:Get(
-				Path:Join(self.GithubUrl,"UpdateInfo","Install.data"),
+				Path:Join(self.GithubUrl,"UpdateInfo","Install.data")
 			)
+			print(#InstallData)
 			local DataOffset = 1
 			if self.Helper.Io:IsFolder(Path:Join(self.Directory,"Data")) then
 				--//Remove old Data folder
@@ -64,18 +65,16 @@ local ReGui = {
 					2 : Path (String)
 				]]
 				if IOInstruction[1] == 1 then
-					coroutine.resume(coroutine.create(function()
-						self.Helper.Io:Write(
-							Path:Join(self.Directory,"Data",IOInstruction[2]),
-							string.sub(
-								InstallData,
-								DataOffset,
-								DataOffset + IOInstruction[3]
-							)
+					self.Helper.Io:Write(
+						Path:Join(self.Directory,"Data",IOInstruction[2]),
+						string.sub(
+							InstallData,
+							DataOffset,
+							DataOffset + IOInstruction[3]
 						)
-						DataOffset += IOInstruction[3]
-						CompletedInstructions += 1
-					end))
+					)
+					DataOffset += IOInstruction[3]
+					CompletedInstructions += 1
 				elseif IOInstruction[1] == 2 then
 					self.Helper.Io:MakeFolder(
 						Path:Join(self.Directory,"Data",IOInstruction[2])

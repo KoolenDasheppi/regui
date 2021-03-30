@@ -16,3 +16,4 @@ for _,InstallInstruction in pairs(decodedJson) do
 end
 local newJson = jsonLib.encode(decodedJson)
 dataFile:write(dataContents)
+jsonFile:write(newJson)
