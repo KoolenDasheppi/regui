@@ -73,6 +73,9 @@ local ReGui = {
 					Path:Join(self.GithubUrl,"UpdateInfo","LatestVersion.txt")
 				)
 			)
+			--//Create the ThirdPartyPlugins directory
+			InstallingGui.MainWindow.Status.Text = "Creating theThirdPartyPlugins directory"
+			self.Helper.Io:MakeFolder(Path:Join(self.Directory,"ThirdPartyPlugins"))
 		end
 		InstallingGui.MainWindow.Status.Text = "Reading LocalVersion.txt"
 		local LocalVersion = self.Helper.Io:Read(

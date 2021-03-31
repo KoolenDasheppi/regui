@@ -6,23 +6,23 @@ return function(LocalPath)
         };
         GetPluginMeta = function(self,PluginName)
             local Meta =  game:GetService("HttpService"):JSONDecode(
-                _ReGui.Helper.Io:Read(_ReGui.Helper.Path:Join(_ReGui.Directory,"Data","Plugins",PluginName,"Plugin.json"))  
+                _ReGui.Helper.Io:Read(_ReGui.Helper.Path:Join(_ReGui.Directory,"ThirdPartyPlugins",PluginName,"Plugin.json"))  
             )
             for Key,Value in pairs(Meta.Thumb) do
                 Meta.Thumb[Key] = _ReGui.Helper.Asset:Get(
-                    _ReGui.Helper.Path:Join(_ReGui.Directory,"Data","Plugins",PluginName,Value)
+                    _ReGui.Helper.Path:Join(_ReGui.Directory,"ThirdPartyPlugins",PluginName,Value)
                 );
             end
             return Meta
         end;
 
         GetPlugins = function(self)
-            local PluginsPath = _ReGui.Helper.Path:Join(_ReGui.Directory,"Data","Plugins")
-            local PluginList = _ReGui.Helper.Io:ListFiles(_ReGui.Helper.Path:Join(_ReGui.Directory,"Data","Plugins"))
+            local PluginsPath = _ReGui.Helper.Path:Join(_ReGui.Directory,"ThirdPartyPlugins")
+            local PluginList = _ReGui.Helper.Io:ListFiles(_ReGui.Helper.Path:Join(_ReGui.Directory,"ThirdPartyPlugins"))
             local FinalList = {}
             for _,PluginName in pairs(PluginList) do
                 PluginName = string.sub(PluginName,#PluginsPath+2,#PluginName)
-                if _ReGui.Helper.Io:IsFile(_ReGui.Helper.Path:Join(_ReGui.Directory,"Data","Plugins",PluginName,"Plugin.lua")) then
+                if _ReGui.Helper.Io:IsFile(_ReGui.Helper.Path:Join(_ReGui.Directory,"ThirdPartyPlugins",PluginName,"Plugin.lua")) then
                     table.insert(FinalList,PluginName)
                 else
                     _ReGui:Log(PluginName .. " is missing \"Plugin.lua\"")
@@ -46,7 +46,7 @@ return function(LocalPath)
 
         Load = function(self,PluginName)
             if not self.Storage.LoadedPlugins[PluginName] then
-                self.Storage.LoadedPlugins[PluginName] = _ReGui.Helper:Require(_ReGui.Helper.Path:Join(_ReGui.Directory,"Data","Plugins",PluginName),"Plugin.lua")
+                self.Storage.LoadedPlugins[PluginName] = _ReGui.Helper:Require(_ReGui.Helper.Path:Join(_ReGui.Directory,"ThirdPartyPlugins",PluginName),"Plugin.lua")
             end
             return self.Storage.LoadedPlugins[PluginName]
         end;
@@ -65,7 +65,7 @@ return function(LocalPath)
         end;
 
         SetWasEnabled = function(self,PluginName,Enabled)
-            local JSONPath = _ReGui.Helper.Path:Join(_ReGui.Directory,"EnabledPlugins.json")
+            local JSONPath = _ReGui.Helper.Path:Join(_ReGui.Directory,"EnabledThirdPartyPlugins.json")
             local EnabledPlugins
 
             if _ReGui.Helper.Io:IsFile(JSONPath) then
