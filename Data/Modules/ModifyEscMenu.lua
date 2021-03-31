@@ -22,7 +22,7 @@ return function(LocalPath)
     MEM.ReGuiSettingsHub = MEM.HubBar:WaitForChild("GameSettingsTab"):Clone()
     MEM.ReGuiSettingsHub.Parent = MEM.HubBar
     MEM.ReGuiSettingsHub.Name = "RGSettingsTab"
-    MEM.ReGuiSettingsHub.Icon.Title.Text = "ReGui Settings"
+    MEM.ReGuiSettingsHub.Icon.Title.Text = "ReGUI Settings"
     MEM.ReGuiSettingsHub.Icon.Title.TextSize = 12
     MEM.ReGuiSettingsHub.Icon.Title.TextWrapped = 12
     MEM.ReGuiSettingsHub.Icon.Image = _ReGui.Helper.Asset:Get(_ReGui.Helper.Path:Join(LocalPath,"..","Assets","UI","EscMenu","Settings","RGSettings.png"))

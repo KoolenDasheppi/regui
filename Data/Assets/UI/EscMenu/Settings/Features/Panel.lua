@@ -23,7 +23,7 @@ return function(LocalPath)
         end
         
         local PluginsList
-        local PluginItemPlaceholder = _ReGui.Helper.Asset:Insert(_ReGui.Helper.Path:Join(LocalPath,"PluginItem.rbxm"))[1]
+        local PluginItemPlaceholder = _ReGui.Helper.Asset:Insert(_ReGui.Helper.Path:Join(LocalPath,"..","Shared","PluginItem.rbxm"))[1]
 
         local ToggleTweenInfo = TweenInfo.new(
             .5, -- Time
@@ -77,6 +77,7 @@ return function(LocalPath)
                     table.insert(UIEvents,PluginItem.Contents.MouseEnter:Connect(function()
                         PluginItem.Contents.PluginIconFrame.PluginVideo.Visible = true
                         PluginItem.Contents.PluginIconFrame.PluginVideo.TimePosition = 0
+                        PluginItem.Contents.PluginIconFrame.PluginVideo.Volume = 0.25
                         PluginItem.Contents.PluginIconFrame.PluginVideo:Play()
                     end))
     
@@ -92,9 +93,9 @@ return function(LocalPath)
                 PluginItem.Contents.TextArea.Creator.Text = "Created by: " .. Plugin.Meta.Creator
 
                 PluginItem.Contents.ToggleFrame.Visible = true
-                PluginItem.Contents.ToggleFrame.RGToggleInner.Image = _ReGui.Helper.Asset:Get(_ReGui.Helper.Path:Join(LocalPath,"RGToggle","RGToggleInner.png"))
-                PluginItem.Contents.ToggleFrame.RGToggleOutline.Image = _ReGui.Helper.Asset:Get(_ReGui.Helper.Path:Join(LocalPath,"RGToggle","RGToggleOutline.png"))
-                PluginItem.Contents.ToggleFrame.RGToggleBall.Image = _ReGui.Helper.Asset:Get(_ReGui.Helper.Path:Join(LocalPath,"RGToggle","RGToggleBall.png"))
+                PluginItem.Contents.ToggleFrame.RGToggleInner.Image = _ReGui.Helper.Asset:Get(_ReGui.Helper.Path:Join(LocalPath,"..","Shared","RGToggle","RGToggleInner.png"))
+                PluginItem.Contents.ToggleFrame.RGToggleOutline.Image = _ReGui.Helper.Asset:Get(_ReGui.Helper.Path:Join(LocalPath,"..","Shared","RGToggle","RGToggleOutline.png"))
+                PluginItem.Contents.ToggleFrame.RGToggleBall.Image = _ReGui.Helper.Asset:Get(_ReGui.Helper.Path:Join(LocalPath,"..","Shared","RGToggle","RGToggleBall.png"))
 
                 table.insert(UIEvents,PluginItem.Contents.ToggleFrame.RGToggleBall.MouseButton1Up:Connect(function()
                     if Plugin.IsEnabled then

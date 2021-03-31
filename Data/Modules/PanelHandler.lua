@@ -10,7 +10,7 @@ return function(LocalPath)
                 local PanelEvent = Instance.new("BindableEvent")
                 _ReGui.Helper:Require(_ReGui.Helper.Path:Join(LocalPath,"..","Assets","UI","EscMenu","Settings",Panel:GetAttribute("PanelReference")),"Panel.lua")(PanelObject,PanelEvent.Event)
                 Panel.PanelButton.MouseButton1Up:Connect(function()
-                    SettingsMenu.PanelContents.Title.Text = Panel:GetAttribute("PanelReference")
+                    SettingsMenu.PanelContents.Title.Text = _ReGui.Helper.Io:Read(_ReGui.Helper.Path:Join(LocalPath,"..","Assets","UI","EscMenu","Settings",Panel:GetAttribute("PanelReference"),"Panel.txt"))
                     local CurPanel = SettingsMenu.PanelContents.Main:GetChildren()[1]
                     if CurPanel then
                         CurPanel.Parent = nil
